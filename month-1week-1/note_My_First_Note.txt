@@ -1,0 +1,6 @@
+Title: My First Note
+Created: 25-10-11 16:09:55
+--------------------------------------------------
+
+This is the content of my first note.
+It can have multiple lines!

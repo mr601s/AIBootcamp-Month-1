@@ -1,0 +1,2 @@
+This is the professional way to handle files.
+The file automatically closes when done.

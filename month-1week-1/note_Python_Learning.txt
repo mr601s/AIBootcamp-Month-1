@@ -1,0 +1,7 @@
+Title: Python Learning
+Created: 25-10-11 17:11:08
+--------------------------------------------------
+
+Today i learned about I/O
+files persist between program runs
+context managers are important
