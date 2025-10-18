@@ -1,147 +1,232 @@
-# AI Bootcamp - Month 1: Python Fundamentals
+# AI Bootcamp - Month 1
 
-Self-directed 6-month bootcamp to transition from sales/banking to Python development and AI engineering.
+My journey learning Python and software development from complete beginner to building real applications.
 
-## 📊 Progress
+## 🎯 Progress Overview
 
-### Week 1: Python Fundamentals
+**Start Date:** October 2025  
+**Current Status:** Week 2, Day 8 Complete  
+**Streak:** 8 consecutive days ✅  
+**Projects Completed:** 8/30  
 
-- ✅ **Day 1:** Functions, algorithms, error handling (13 functions)
-- ✅ **Day 2:** Grade calculator with statistics and validation
-- ✅ **Day 3:** Professional calculator with history and analytics
-- ✅ **Day 4:** File I/O and note-taking app with persistence
+---
 
------
+## 📊 Week 1 - Python Fundamentals (COMPLETE ✅)
 
-## 🛠️ Projects
+### Day 1: Introduction to Programming
+**Project:** Interactive Calculator  
+**Skills Learned:**
+- Variables and data types
+- Operators (arithmetic, comparison)
+- Input/output operations
+- Basic control flow
 
-### Professional Calculator v1.0
+### Day 2: Functions & Control Flow
+**Project:** Number Guessing Game  
+**Skills Learned:**
+- Function definitions and calls
+- Parameters and return values
+- If/elif/else statements
+- While loops
+- Random module
 
-A full-featured command-line calculator with:
+### Day 3: Lists & Iteration
+**Project:** To-Do List Manager  
+**Skills Learned:**
+- Lists (creation, indexing, methods)
+- For loops
+- List operations (append, remove, pop)
+- Enumerate function
 
-- Basic arithmetic operations (+, -, *, /)
-- Advanced operations (exponents, square root, modulo)
-- Calculation history tracking
-- Session statistics (average, min, max, sum)
-- Interactive menu system
-- Error handling and input validation
-- **Tech:** Python, file operations, data structures
+### Day 4: Practice & Refinement
+**Focus:** Indentation mastery and code organization  
+**Skills Practiced:**
+- Python indentation rules
+- Code structure
+- Debugging techniques
+- Clean code principles
 
-### Note-Taking Application
+### Day 5: File I/O & JSON
+**Project:** Contact Manager (CRUD Application)  
+**Skills Learned:**
+- File operations (read, write)
+- JSON serialization/deserialization
+- CRUD operations (Create, Read, Update, Delete)
+- Data persistence
+- Error handling (try/except)
 
-A persistent note management system featuring:
+**Features Implemented:**
+- Add contacts
+- View all contacts
+- Search contacts
+- Delete contacts
+- JSON data persistence
 
-- Create notes with titles and multi-line content
-- List all saved notes
-- Read specific notes with timestamps
-- Search notes by keyword
-- Delete notes with confirmation
-- File persistence (notes survive program restarts)
-- **Tech:** Python, file I/O, os module, datetime
+### Day 6: Advanced Data Structures
+**Project:** Enhanced Contact Manager v2.0  
+**Skills Learned:**
+- Nested dictionaries
+- Complex JSON structures
+- Optional fields with `.get()`
+- List comprehensions
+- Datetime module
+- Category filtering
+- Boolean flags
 
-### Grade Calculator
+**Features Implemented:**
+- Multiple email addresses per contact
+- Multiple phone numbers per contact
+- Address information (nested dictionary)
+- Contact categories (Work, Personal, Family)
+- Favorites system
+- Creation timestamps
+- Advanced search across all fields
 
-Statistical analysis tool with:
+### Day 7: Week 1 Capstone
+**Project:** Personal Finance Tracker  
+**Skills Learned:**
+- Mathematical operations in Python
+- Budget algorithms
+- Percentage calculations
+- Data aggregation
+- Statistical analysis
+- Professional UI/UX design
 
-- Multiple grade input
-- Average calculation
-- Letter grade assignment
-- Input validation
-- **Tech:** Python, data validation, statistics
+**Features Implemented:**
+- Income/expense tracking by category
+- Monthly budget management (6 categories)
+- Budget vs actual spending comparisons
+- Over-budget warnings and alerts
+- Financial analytics with percentages
+- Category-based spending breakdown
+- Search and filter transactions
+- Complete data persistence
 
-### Word Analysis Suite
+---
 
-Collection of 13 utility functions:
+## 🚀 Week 2 - Object-Oriented Programming (IN PROGRESS)
 
-- String manipulation
-- Data validation
-- Mathematical operations
-- List processing
-- **Tech:** Python fundamentals
+### Day 8: Introduction to OOP ✅
+**Project:** Complete Banking System  
+**Skills Learned:**
+- Classes and objects
+- `__init__` constructor method
+- Instance attributes and methods
+- The `self` parameter
+- Object interaction
+- State management
+- Encapsulation
 
------
+**Features Implemented:**
+- BankAccount class with full functionality
+- Create unlimited independent accounts
+- Deposit money with validation
+- Withdraw money with overdraft protection
+- Transfer money between accounts
+- Complete transaction history tracking
+- Error handling throughout
+- Real-time balance updates
 
-## 📚 Technical Skills Acquired
+**Technical Achievements:**
+- 157 lines of production-ready code
+- Multi-object interaction (transfers)
+- Professional banking logic
+- Data integrity maintained across operations
 
-### Week 1 Complete:
+---
 
-- **Core Python:** Variables, data types, operators, functions
-- **Control Flow:** If/elif/else, loops (for, while), break/continue
-- **Data Structures:** Lists, dictionaries, strings
-- **File Operations:** Reading, writing, appending files
-- **File Persistence:** Saving data between program runs
-- **Error Handling:** Try/except blocks, input validation
-- **Code Organization:** Functions, modules, clean structure
-- **Tools:** VS Code, Git, GitHub, terminal/command line
+## 💻 Technical Skills Acquired
 
------
+### Python Fundamentals
+- ✅ Variables, data types, operators
+- ✅ Control flow (if/elif/else, loops)
+- ✅ Functions (parameters, returns, docstrings)
+- ✅ Error handling (try/except/finally)
+- ✅ Type conversion
 
-## 🎯 Learning Approach
+### Data Structures
+- ✅ Lists (indexing, slicing, methods, comprehensions)
+- ✅ Dictionaries (keys, values, methods, comprehensions)
+- ✅ Nested data structures
+- ✅ Sets and tuples (basic understanding)
 
-**Building projects, not just following tutorials.**
+### File & Data Operations
+- ✅ File I/O (read, write, append)
+- ✅ JSON serialization/deserialization
+- ✅ Data persistence patterns
+- ✅ CSV handling (basic)
 
-Each day includes:
+### Object-Oriented Programming
+- ✅ Classes and objects
+- ✅ Constructors (`__init__`)
+- ✅ Instance attributes and methods
+- ✅ Object interaction
+- ✅ State management
+- ✅ Encapsulation
 
-1. Core concept learning
-1. Hands-on project building
-1. Git commits with descriptive messages
-1. Code review and refactoring
-1. Documentation and README updates
+### Professional Practices
+- ✅ Git version control
+- ✅ GitHub workflow
+- ✅ Code organization
+- ✅ Documentation and comments
+- ✅ Debugging techniques
+- ✅ Clean code principles
 
-**Philosophy:** Write code every day. Build things that work. Share progress publicly.
+---
 
------
+## 🎓 What's Next
 
-## 📅 Upcoming
+### Upcoming Topics (Week 2 Continued)
+- Day 9: Inheritance and Polymorphism
+- Day 10: Advanced OOP Patterns
+- Day 11-14: More OOP projects and concepts
 
-### Week 2 Plan:
+### Future Weeks
+- **Week 3:** Advanced Python & Algorithms
+- **Week 4:** APIs and Web Development Basics
+- **Month 2:** Backend Development (Flask/Django)
+- **Month 3:** Databases and Full-Stack Projects
+- **Month 4-6:** Portfolio Projects and Job Preparation
 
-- **Day 5:** JSON and data structures
-- **Day 6:** Advanced data manipulation
-- **Day 7:** Error handling deep dive
-- **Day 8:** Code organization and modules
-- **Day 9:** Week 1 review and capstone project
+---
 
------
+## 📈 Learning Approach
 
-## 🔗 Connect
+**Daily Commitment:** 90-120 minutes of focused coding  
+**Practice Philosophy:** Build projects, not just tutorials  
+**Debugging Mindset:** Every error is a learning opportunity  
+**Consistency:** Code every single day, no exceptions  
 
-Building in public. Following my journey from banking/sales to Python development.
+---
 
-**LinkedIn:** [Your LinkedIn URL]  
-**GitHub:** github.com/mr601s
+## 🏆 Key Achievements
 
------
+- ✅ 8 consecutive days of coding
+- ✅ 8 complete, functional projects
+- ✅ 0 days missed
+- ✅ Learned to debug independently
+- ✅ Built production-ready applications
+- ✅ Maintained perfect GitHub contribution streak
 
-## 📖 Repository Structure
+---
 
-```
-AIBootcamp-Month-1/
-├── month_1week_1_day1_functions.py          # 13 core functions
-├── month_1week_1_day2_grade_calculator.py   # Grade calculator with stats
-├── month_1week_1_day3_calculator.py         # Professional calculator
-├── month_1week_1_day4_files.py              # File I/O basics
-├── month_1week_1_day4_notes_app.py          # Note-taking application
-└── README.md                                 # This file
-```
+## 📫 Connect
 
------
+**GitHub:** [mr601s](https://github.com/mr601s)  
+**LinkedIn:** [Add your LinkedIn if you want]
 
-## 🚀 Goals
+---
 
-**Month 1:** Python fundamentals and project building  
-**Month 2:** Backend development, APIs, databases  
-**Month 3:** Web applications and real-world projects  
-**Month 4:** Advanced topics and specialization  
-**Month 5:** Interview preparation and portfolio polish  
-**Month 6:** Job search and career transition
+## 💡 Lessons Learned
 
------
+1. **Consistency beats intensity** - Daily practice compounds rapidly
+2. **Build to learn** - Projects teach more than tutorials
+3. **Debug fearlessly** - Errors are teachers, not obstacles
+4. **Document everything** - Future you will thank present you
+5. **Love the process** - Passion fuels persistence
 
-**Last Updated:** Week 1 Complete (Day 4)  
-**Status:** Active development  
-**Commitment:** 6 months to career transition
+---
 
------
-
-*Learning in public. Building every day. One project at a time.* 🚀
+*Last Updated: October 18, 2025*  
+*Current Focus: Object-Oriented Programming*  
+*Next Milestone: Complete Week 2 (Day 14)*
