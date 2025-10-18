@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Battle Game - For My Daughter 💙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .character-select {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .character-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: white;
+            text-align: center;
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .character-card.warrior {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .character-card.mage {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .character-card.archer {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .character-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .character-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .character-stats {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .battle-arena {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .fighters {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .fighter {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .fighter-icon {
+            font-size: 5em;
+            margin-bottom: 10px;
+        }
+
+        .fighter-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .health-bar-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 30px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .health-bar {
+            background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .health-bar.low {
+            background: linear-gradient(90deg, #f56565 0%, #c53030 100%);
+        }
+
+        .health-bar.medium {
+            background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%);
+        }
+
+        .battle-log {
+            background: #2d3748;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-entry {
+            margin: 8px 0;
+            padding: 8px;
+            border-left: 3px solid #667eea;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .log-entry.damage {
+            border-left-color: #f56565;
+        }
+
+        .log-entry.heal {
+            border-left-color: #48bb78;
+        }
+
+        .log-entry.victory {
+            border-left-color: #ffd700;
+            background: rgba(255,215,0,0.2);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-attack {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-special {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.3s;
+        }
+
+        .vs {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>⚔️ RPG Battle Game ⚔️</h1>
+        <p class="subtitle">Choose your hero and battle!</p>
+
+        <!-- Character Selection -->
+        <div class="character-select" id="characterSelect">
+            <div class="character-card warrior" onclick="selectCharacter('warrior')">
+                <div class="character-icon">⚔️</div>
+                <div class="character-name">WARRIOR</div>
+                <div class="character-stats">
+                    ❤️ HP: 150<br>
+                    ⚔️ Damage: 25<br>
+                    🛡️ Armor: 50
+                </div>
+            </div>
+
+            <div class="character-card mage" onclick="selectCharacter('mage')">
+                <div class="character-icon">✨</div>
+                <div class="character-name">MAGE</div>
+                <div class="character-stats">
+                    ❤️ HP: 80<br>
+                    🔥 Damage: 30<br>
+                    💙 Mana: 100
+                </div>
+            </div>
+
+            <div class="character-card archer" onclick="selectCharacter('archer')">
+                <div class="character-icon">🏹</div>
+                <div class="character-name">ARCHER</div>
+                <div class="character-stats">
+                    ❤️ HP: 100<br>
+                    🎯 Damage: 22<br>
+                    💥 Crits: 25%
+                </div>
+            </div>
+        </div>
+
+        <!-- Battle Arena -->
+        <div class="battle-arena" id="battleArena">
+            <div class="fighters">
+                <div class="fighter">
+                    <div class="fighter-icon" id="playerIcon">⚔️</div>
+                    <div class="fighter-name" id="playerName">Warrior</div>
+                    <div class="health-bar-container">
+                        <div class="health-bar" id="playerHealth" style="width: 100%;">
+                            <span id="playerHealthText">150/150</span>
+                        </div>
+                    </div>
+                    <div id="playerResource"></div>
+                </div>
+
+                <div class="vs">VS</div>
+
+                <div class="fighter">
+                    <div class="fighter-icon" id="enemyIcon">👹</div>
+                    <div class="fighter-name" id="enemyName">Evil Monster</div>
+                    <div class="health-bar-container">
+                        <div class="health-bar" id="enemyHealth" style="width: 100%;">
+                            <span id="enemyHealthText">100/100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="battle-log" id="battleLog">
+                <div class="log-entry">⚔️ Battle begins! Choose your action!</div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-attack" onclick="playerAttack()">⚔️ Attack</button>
+                <button class="btn btn-special" onclick="playerSpecial()" id="specialBtn">💥 Special Attack</button>
+                <button class="btn btn-restart" onclick="restart()">🔄 New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let player = null;
+        let enemy = null;
+        let gameOver = false;
+
+        // Character templates
+        const characters = {
+            warrior: {
+                name: 'Warrior',
+                icon: '⚔️',
+                maxHealth: 150,
+                health: 150,
+                damage: 25,
+                armor: 50,
+                resource: 'rage',
+                resourceValue: 0,
+                maxResource: 100
+            },
+            mage: {
+                name: 'Mage',
+                icon: '✨',
+                maxHealth: 80,
+                health: 80,
+                damage: 30,
+                resource: 'mana',
+                resourceValue: 100,
+                maxResource: 100
+            },
+            archer: {
+                name: 'Archer',
+                icon: '🏹',
+                maxHealth: 100,
+                health: 100,
+                damage: 22,
+                critChance: 25,
+                resource: 'arrows',
+                resourceValue: 30,
+                maxResource: 30
+            }
+        };
+
+        function selectCharacter(type) {
+            player = JSON.parse(JSON.stringify(characters[type]));
+            
+            // Create enemy (random character)
+            const enemyTypes = ['warrior', 'mage', 'archer'];
+            const randomEnemy = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+            enemy = JSON.parse(JSON.stringify(characters[randomEnemy]));
+            enemy.name = 'Evil ' + enemy.name;
+
+            // Hide selection, show battle
+            document.getElementById('characterSelect').style.display = 'none';
+            document.getElementById('battleArena').style.display = 'block';
+
+            // Update UI
+            updateBattleUI();
+            addLog(`You chose ${player.name}! Your opponent is ${enemy.name}!`);
+        }
+
+        function updateBattleUI() {
+            // Update player
+            document.getElementById('playerIcon').textContent = player.icon;
+            document.getElementById('playerName').textContent = player.name;
+            updateHealthBar('player', player.health, player.maxHealth);
+
+            // Update resource
+            if (player.resource) {
+                const resourceText = `${player.resource.toUpperCase()}: ${player.resourceValue}/${player.maxResource}`;
+                document.getElementById('playerResource').innerHTML = 
+                    `<div style="margin-top: 10px; font-weight: bold;">${resourceText}</div>`;
+            }
+
+            // Update enemy
+            document.getElementById('enemyIcon').textContent = enemy.icon;
+            document.getElementById('enemyName').textContent = enemy.name;
+            updateHealthBar('enemy', enemy.health, enemy.maxHealth);
+        }
+
+        function updateHealthBar(who, health, maxHealth) {
+            const percentage = (health / maxHealth) * 100;
+            const bar = document.getElementById(who + 'Health');
+            const text = document.getElementById(who + 'HealthText');
+            
+            bar.style.width = percentage + '%';
+            text.textContent = Math.max(0, health) + '/' + maxHealth;
+
+            // Color based on health
+            bar.className = 'health-bar';
+            if (percentage < 30) bar.classList.add('low');
+            else if (percentage < 60) bar.classList.add('medium');
+        }
+
+        function addLog(message, type = '') {
+            const log = document.getElementById('battleLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + type;
+            entry.textContent = message;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function playerAttack() {
+            if (gameOver) return;
+
+            let damage = player.damage;
+            let message = `${player.icon} You attack for ${damage} damage!`;
+
+            // Special mechanics
+            if (player.resource === 'rage') {
+                player.resourceValue = Math.min(player.maxResource, player.resourceValue + 10);
+            } else if (player.resource === 'mana' && player.resourceValue >= 15) {
+                player.resourceValue -= 15;
+            } else if (player.resource === 'arrows' && player.resourceValue > 0) {
+                player.resourceValue -= 1;
+                // Check for crit
+                if (Math.random() * 100 < player.critChance) {
+                    damage = 45;
+                    message = `🎯 CRITICAL HIT! ${damage} damage!`;
+                }
+            }
+
+            enemy.health -= damage;
+            addLog(message, 'damage');
+            shakeElement('enemyIcon');
+
+            checkVictory() || enemyTurn();
+            updateBattleUI();
+        }
+
+        function playerSpecial() {
+            if (gameOver) return;
+
+            let damage = 0;
+            let message = '';
+            let canUse = false;
+
+            if (player.resource === 'rage' && player.resourceValue >= 50) {
+                damage = 60;
+                player.resourceValue -= 50;
+                message = `💥 DEVASTATING BLOW! ${damage} damage!`;
+                canUse = true;
+            } else if (player.resource === 'mana' && player.resourceValue >= 50) {
+                damage = 70;
+                player.resourceValue -= 50;
+                message = `☄️ METEOR STORM! ${damage} damage!`;
+                canUse = true;
+            } else if (player.resource === 'arrows' && player.resourceValue >= 3) {
+                damage = 60;
+                player.resourceValue -= 3;
+                message = `🎯🎯🎯 MULTI-SHOT! ${damage} damage!`;
+                canUse = true;
+            }
+
+            if (canUse) {
+                enemy.health -= damage;
+                addLog(message, 'damage');
+                shakeElement('enemyIcon');
+                checkVictory() || enemyTurn();
+            } else {
+                addLog(`❌ Not enough ${player.resource}!`);
+            }
+
+            updateBattleUI();
+        }
+
+        function enemyTurn() {
+            if (gameOver) return;
+
+            setTimeout(() => {
+                const damage = enemy.damage;
+                player.health -= damage;
+                addLog(`${enemy.icon} ${enemy.name} attacks for ${damage} damage!`, 'damage');
+                shakeElement('playerIcon');
+                checkVictory();
+                updateBattleUI();
+            }, 1000);
+        }
+
+        function checkVictory() {
+            if (enemy.health <= 0) {
+                gameOver = true;
+                addLog(`🎉 VICTORY! You defeated ${enemy.name}!`, 'victory');
+                document.querySelectorAll('.btn-attack, .btn-special').forEach(btn => btn.disabled = true);
+                return true;
+            }
+            if (player.health <= 0) {
+                gameOver = true;
+                addLog(`💀 DEFEAT! ${enemy.name} won the battle!`, 'victory');
+                document.querySelectorAll('.btn-attack, .btn-special').forEach(btn => btn.disabled = true);
+                return true;
+            }
+            return false;
+        }
+
+        function shakeElement(id) {
+            const el = document.getElementById(id);
+            el.classList.add('shake');
+            setTimeout(() => el.classList.remove('shake'), 300);
+        }
+
+        function restart() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
