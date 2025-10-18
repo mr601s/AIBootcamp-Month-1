@@ -153,5 +153,3 @@ if __name__ == "__main__":
     john.show_transactions()
     alice.show_transactions()
     bob.show_transactions()
-    
-        
