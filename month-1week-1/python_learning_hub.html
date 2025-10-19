@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Python Learning Hub - Days 1-9 & Beyond</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --dark: #2d3748;
+            --light: #f7fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 40px;
+            background: var(--light);
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--dark);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 20px 30px;
+            color: white;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .flashcard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .flashcard {
+            background: white;
+            border: 2px solid var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 200px;
+            position: relative;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: var(--primary);
+        }
+
+        .flashcard.flipped .card-front {
+            display: none;
+        }
+
+        .flashcard.flipped .card-back {
+            display: block;
+        }
+
+        .card-front, .card-back {
+            min-height: 150px;
+        }
+
+        .card-back {
+            display: none;
+        }
+
+        .card-label {
+            font-size: 0.8em;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card-question {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .card-answer {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .concept-card {
+            background: var(--light);
+            border-left: 5px solid var(--primary);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .concept-title {
+            font-size: 1.5em;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .concept-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .meta-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .review-schedule {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-date {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .review-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .review-status.pending {
+            background: var(--warning);
+            color: white;
+        }
+
+        .review-status.complete {
+            background: var(--success);
+            color: white;
+        }
+
+        .add-button {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .add-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .progress-bar {
+            background: var(--light);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .tip-box {
+            background: #fff3cd;
+            border-left: 5px solid var(--warning);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--light);
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .flashcard-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tab {
+                padding: 15px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🐍 My Python Learning Hub</h1>
+            <p>Days 1-9 Complete | Building to Mastery</p>
+        </div>
+
+        <!-- Stats Dashboard -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Days Complete</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Concepts Learned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2000+</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Projects Built</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('flashcards')">📚 Flashcards</button>
+            <button class="nav-tab" onclick="showTab('concepts')">📖 Concept Dictionary</button>
+            <button class="nav-tab" onclick="showTab('review')">🔄 Review Schedule</button>
+            <button class="nav-tab" onclick="showTab('feynman')">🎓 Feynman Notes</button>
+            <button class="nav-tab" onclick="showTab('progress')">📊 Progress Tracker</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- FLASHCARDS TAB -->
+            <div id="flashcards" class="tab-content active">
+                <h2 class="section-title">Interactive Flashcards</h2>
+                <p style="color: #666; margin-bottom: 20px;">Click any card to flip it and see the answer!</p>
+                
+                <input type="text" class="search-box" placeholder="🔍 Search flashcards..." onkeyup="filterCards(this.value)">
+
+                <div class="flashcard-container" id="flashcardContainer">
+                    <!-- Flashcard 1 -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="basics">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What are the 5 primitive data types in Python?</div>
+                            <div class="tag">Basics</div>
+                            <div class="tag">Day 1</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                <strong>1. int</strong> - Integers (whole numbers)<br>
+                                <strong>2. float</strong> - Decimals (3.14)<br>
+                                <strong>3. str</strong> - Strings ("text")<br>
+                                <strong>4. bool</strong> - Boolean (True/False)<br>
+                                <strong>5. NoneType</strong> - None
+                                <div class="code-example">age = 25        # int
+price = 19.99   # float
+name = "John"   # str
+valid = True    # bool
+result = None   # NoneType</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 2 -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="basics">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What's the difference between mutable and immutable?</div>
+                            <div class="tag">Basics</div>
+                            <div class="tag">Day 1</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                <strong>MUTABLE:</strong> Can be changed after creation<br>
+                                • Lists, dictionaries, sets<br><br>
+                                <strong>IMMUTABLE:</strong> Cannot be changed<br>
+                                • Strings, tuples, integers, floats
+                                <div class="code-example">my_list = [1, 2, 3]
+my_list[0] = 99  # ✅ Works
+
+my_string = "hello"
+my_string[0] = "H"  # ❌ Error</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 3 -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="control-flow">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What's the difference between break and continue?</div>
+                            <div class="tag">Control Flow</div>
+                            <div class="tag">Day 2</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                <strong>break:</strong> Exit loop entirely<br>
+                                <strong>continue:</strong> Skip current iteration
+                                <div class="code-example"># break example
+for i in range(5):
+    if i == 2:
+        break
+    print(i)  # 0, 1
+
+# continue example
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)  # 0, 1, 3, 4</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 4 -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="functions">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What is a closure in Python?</div>
+                            <div class="tag">Functions</div>
+                            <div class="tag">Day 2</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                A function that remembers variables from its enclosing scope.
+                                <div class="code-example">def outer(x):
+    def inner(y):
+        return x + y  # Remembers x
+    return inner
+
+add_5 = outer(5)
+print(add_5(10))  # 15</div>
+                                <strong>Use case:</strong> Creating function factories
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 5 -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="data-structures">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">List vs Tuple vs Set - when to use each?</div>
+                            <div class="tag">Data Structures</div>
+                            <div class="tag">Day 3</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                <strong>LIST []:</strong> Ordered, mutable, allows duplicates<br>
+                                → Use when you need to modify items<br><br>
+                                <strong>TUPLE ():</strong> Ordered, immutable, allows duplicates<br>
+                                → Use when data shouldn't change<br><br>
+                                <strong>SET {}:</strong> Unordered, mutable, NO duplicates<br>
+                                → Use when you need unique items
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 6 - OOP -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="oop">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What is the difference between a class and an object?</div>
+                            <div class="tag">OOP</div>
+                            <div class="tag">Day 8</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                <strong>CLASS:</strong> Blueprint/template<br>
+                                <strong>OBJECT:</strong> Instance created from class
+                                <div class="code-example">class Dog:  # Blueprint
+    def __init__(self, name):
+        self.name = name
+
+buddy = Dog("Buddy")  # Object
+max = Dog("Max")      # Object</div>
+                                Think: Cookie cutter vs actual cookies
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 7 - OOP -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="oop">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What does self mean in Python classes?</div>
+                            <div class="tag">OOP</div>
+                            <div class="tag">Day 8</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                <strong>self:</strong> Reference to the current instance<br>
+                                Allows each object to have its own data
+                                <div class="code-example">class Person:
+    def __init__(self, name):
+        self.name = name  # THIS object's name
+    
+    def greet(self):
+        print(f"Hi, I'm {self.name}")
+
+alice = Person("Alice")
+bob = Person("Bob")
+alice.greet()  # Hi, I'm Alice
+bob.greet()    # Hi, I'm Bob</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 8 - OOP -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="oop">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What is inheritance in OOP?</div>
+                            <div class="tag">OOP</div>
+                            <div class="tag">Day 9</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                Child class inherits attributes/methods from parent class
+                                <div class="code-example">class Animal:  # Parent
+    def eat(self):
+        print("Eating")
+
+class Dog(Animal):  # Child
+    def bark(self):
+        print("Woof!")
+
+buddy = Dog()
+buddy.eat()   # Inherited!
+buddy.bark()  # Own method</div>
+                                <strong>Benefit:</strong> Code reuse (DRY principle)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 9 - OOP -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="oop">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What is polymorphism?</div>
+                            <div class="tag">OOP</div>
+                            <div class="tag">Day 9</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                Same method name, different behavior in different classes
+                                <div class="code-example">class Warrior:
+    def attack(self):
+        return 25  # Sword damage
+
+class Mage:
+    def attack(self):
+        return 30  # Magic damage
+
+# Same method, different results!
+warrior.attack()  # 25
+mage.attack()     # 30</div>
+                                <strong>Key:</strong> "Many forms" of same interface
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 10 - OOP -->
+                    <div class="flashcard" onclick="flipCard(this)" data-category="oop">
+                        <div class="card-front">
+                            <div class="card-label">QUESTION</div>
+                            <div class="card-question">What does super() do?</div>
+                            <div class="tag">OOP</div>
+                            <div class="tag">Day 9</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-label">ANSWER</div>
+                            <div class="card-answer">
+                                Calls method from parent class
+                                <div class="code-example">class Warrior(Character):
+    def __init__(self, name):
+        super().__init__(name, 150)
+        self.armor = 50
+
+# super().__init__() calls
+# Character's __init__()</div>
+                                <strong>Use:</strong> Extend parent behavior, don't replace it
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="add-button" onclick="alert('To add cards: Edit the HTML file and copy the flashcard template!')">➕ Add New Flashcard</button>
+            </div>
+
+            <!-- CONCEPTS DICTIONARY TAB -->
+            <div id="concepts" class="tab-content">
+                <h2 class="section-title">Python Concepts Dictionary</h2>
+                <p style="color: #666; margin-bottom: 20px;">Comprehensive explanations of every concept you've learned</p>
+
+                <input type="text" class="search-box" placeholder="🔍 Search concepts..." onkeyup="filterConcepts(this.value)">
+
+                <div id="conceptsContainer">
+                    <!-- Concept 1 -->
+                    <div class="concept-card" data-search="variable assignment data">
+                        <h3 class="concept-title">📌 Variables</h3>
+                        <p><strong>What:</strong> Named storage locations for data</p>
+                        <p><strong>Why:</strong> Store and reuse values throughout your program</p>
+                        <p><strong>When to use:</strong> Every program needs variables</p>
+                        
+                        <div class="concept-meta">
+                            <div class="meta-item">
+                                <div class="meta-label">Example:</div>
+                                <div class="code-example">name = "John"
+age = 25
+is_student = True</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Common Mistakes:</div>
+                                <p>• Using reserved keywords<br>
+                                • Starting with numbers<br>
+                                • Not using descriptive names</p>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px;"><strong>Related:</strong> Data types, assignment operator, naming conventions</p>
+                    </div>
+
+                    <!-- Concept 2 -->
+                    <div class="concept-card" data-search="class oop object">
+                        <h3 class="concept-title">🏗️ Classes (OOP)</h3>
+                        <p><strong>What:</strong> Blueprint for creating objects with shared structure and behavior</p>
+                        <p><strong>Why:</strong> Organize code, create reusable templates, model real-world things</p>
+                        <p><strong>When to use:</strong> When you need multiple instances of similar things</p>
+                        
+                        <div class="concept-meta">
+                            <div class="meta-item">
+                                <div class="meta-label">Example:</div>
+                                <div class="code-example">class Dog:
+    def __init__(self, name):
+        self.name = name
+    
+    def bark(self):
+        print(f"{self.name} says Woof!")
+
+buddy = Dog("Buddy")
+buddy.bark()  # Buddy says Woof!</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Key Components:</div>
+                                <p>• __init__ (constructor)<br>
+                                • self (instance reference)<br>
+                                • Methods (functions in class)<br>
+                                • Attributes (data in class)</p>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px;"><strong>Related:</strong> Objects, inheritance, methods, attributes</p>
+                    </div>
+
+                    <!-- Concept 3 -->
+                    <div class="concept-card" data-search="inheritance oop parent child">
+                        <h3 class="concept-title">🔗 Inheritance</h3>
+                        <p><strong>What:</strong> Child class inherits attributes and methods from parent class</p>
+                        <p><strong>Why:</strong> Code reuse, avoid duplication (DRY principle)</p>
+                        <p><strong>When to use:</strong> When classes share common functionality</p>
+                        
+                        <div class="concept-meta">
+                            <div class="meta-item">
+                                <div class="meta-label">Example:</div>
+                                <div class="code-example">class Character:  # Parent
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+
+class Warrior(Character):  # Child
+    def __init__(self, name):
+        super().__init__(name)
+        self.armor = 50  # Add own
+
+warrior = Warrior("Conan")
+# Has name, health (inherited)
+# AND armor (own)</div>
+                            </div>
+                            <div class="meta-item">
+                                <div class="meta-label">Benefits:</div>
+                                <p>• Write code once, use many times<br>
+                                • Easy to maintain<br>
+                                • Natural hierarchy<br>
+                                • Extensible design</p>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px;"><strong>Related:</strong> super(), method overriding, polymorphism</p>
+                    </div>
+
+                    <!-- Add more concepts here following the same pattern -->
+                </div>
+
+                <button class="add-button" onclick="alert('To add concepts: Edit the HTML file and copy the concept-card template!')">➕ Add New Concept</button>
+            </div>
+
+            <!-- REVIEW SCHEDULE TAB -->
+            <div id="review" class="tab-content">
+                <h2 class="section-title">Spaced Repetition Review Schedule</h2>
+                <p style="color: #666; margin-bottom: 20px;">Review concepts at optimal intervals for long-term retention</p>
+
+                <div class="tip-box">
+                    <span class="tip-icon">💡</span>
+                    <strong>Spaced Repetition:</strong> Review at 1 day, 3 days, 7 days, 14 days, and 30 days for permanent memory!
+                </div>
+
+                <h3 style="margin: 30px 0 15px 0;">Day 8: OOP Basics</h3>
+                <div class="review-schedule">
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 9 (Oct 18)</div>
+                            <div style="color: #666; font-size: 0.9em;">First review - 1 day after</div>
+                        </div>
+                        <div class="review-status complete">✓ Complete</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 11 (Oct 20)</div>
+                            <div style="color: #666; font-size: 0.9em;">Second review - 3 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 15 (Oct 24)</div>
+                            <div style="color: #666; font-size: 0.9em;">Third review - 7 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 22 (Oct 31)</div>
+                            <div
+                            <div style="color: #666; font-size: 0.9em;">Fourth review - 14 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 38 (Nov 16)</div>
+                            <div style="color: #666; font-size: 0.9em;">Final review - 30 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 30px 0 15px 0;">Day 9: Inheritance & Polymorphism</h3>
+                <div class="review-schedule">
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 10 (Oct 19)</div>
+                            <div style="color: #666; font-size: 0.9em;">First review - 1 day after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 12 (Oct 21)</div>
+                            <div style="color: #666; font-size: 0.9em;">Second review - 3 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 16 (Oct 25)</div>
+                            <div style="color: #666; font-size: 0.9em;">Third review - 7 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 23 (Nov 1)</div>
+                            <div style="color: #666; font-size: 0.9em;">Fourth review - 14 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <div class="review-date">Day 39 (Nov 17)</div>
+                            <div style="color: #666; font-size: 0.9em;">Final review - 30 days after</div>
+                        </div>
+                        <div class="review-status pending">Pending</div>
+                    </div>
+                </div>
+
+                <div class="tip-box" style="margin-top: 30px; background: #d1fae5; border-left-color: var(--success);">
+                    <span class="tip-icon">✅</span>
+                    <strong>Pro Tip:</strong> Set calendar reminders for these review dates. Spend just 5-10 minutes reviewing the concepts on each date!
+                </div>
+
+                <button class="add-button" onclick="alert('To add schedules: Edit the HTML and add new review-schedule sections for each day!')">➕ Add New Review Schedule</button>
+            </div>
+
+            <!-- FEYNMAN TECHNIQUE TAB -->
+            <div id="feynman" class="tab-content">
+                <h2 class="section-title">Feynman Technique Notes</h2>
+                <p style="color: #666; margin-bottom: 20px;">Explain concepts simply, as if teaching a 10-year-old</p>
+
+                <div class="tip-box">
+                    <span class="tip-icon">🎓</span>
+                    <strong>The Feynman Technique:</strong> If you can't explain it simply, you don't understand it well enough. Write it out in plain English with analogies!
+                </div>
+
+                <div id="feynmanContainer">
+                    <!-- Feynman Note 1 -->
+                    <div class="concept-card" style="border-left-color: var(--success);">
+                        <h3 class="concept-title">🔍 What is Inheritance?</h3>
+                        <p style="margin-bottom: 15px;"><strong>Date:</strong> October 18, 2025 | <strong>Topic:</strong> OOP - Day 9</p>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 8px;">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">Simple Explanation:</h4>
+                            <p style="line-height: 1.8;">
+                                Inheritance is like getting traits from your parents. 
+                                
+                                Your parents have: eyes, height, hair color.
+                                You inherit: ALL of those automatically.
+                                You also add: your own personality and skills.
+
+                                In programming:
+                                • Parent class = blueprint with basic features
+                                • Child class = gets all parent features FOR FREE
+                                • Child class adds its own special features
+                            </p>
+
+                            <h4 style="color: var(--primary); margin: 20px 0 10px 0;">Real-World Analogy:</h4>
+                            <p style="line-height: 1.8;">
+                                Think about vehicles:
+                                • Vehicle (parent) has: wheels, engine, steering
+                                • Car (child) inherits all of that + adds 4 doors, trunk
+                                • Motorcycle (child) inherits all of that + adds 2 wheels only, handlebars
+                            </p>
+
+                            <h4 style="color: var(--primary); margin: 20px 0 10px 0;">Code Example:</h4>
+                            <div class="code-example">class Character:  # Parent - the blueprint
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+    
+    def attack(self):
+        return 10
+
+class Warrior(Character):  # Child
+    def __init__(self, name):
+        super().__init__(name)  # Get parent stuff
+        self.armor = 50  # Add my own
+    
+    def attack(self):  # My own version
+        return 25
+
+# Warrior gets name, health FOR FREE
+# Warrior adds armor
+# Warrior customizes attack</div>
+
+                            <h4 style="color: var(--primary); margin: 20px 0 10px 0;">Why This Matters:</h4>
+                            <p style="line-height: 1.8;">
+                                Without inheritance, I'd have to copy the same code for name, health, and basic attack into EVERY character class. 
+                                
+                                With inheritance, I write it ONCE in Character, and every child class (Warrior, Mage, Archer) gets it automatically.
+                                
+                                That's the DRY principle: Don't Repeat Yourself!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feynman Note 2 -->
+                    <div class="concept-card" style="border-left-color: var(--success);">
+                        <h3 class="concept-title">🎭 What is Polymorphism?</h3>
+                        <p style="margin-bottom: 15px;"><strong>Date:</strong> October 18, 2025 | <strong>Topic:</strong> OOP - Day 9</p>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 8px;">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">Simple Explanation:</h4>
+                            <p style="line-height: 1.8;">
+                                Polymorphism means "many forms." It's when the same method name does different things depending on which object calls it.
+
+                                Like pressing the "Start" button:
+                                • On a car → engine starts
+                                • On a computer → boots up
+                                • On a microwave → starts cooking
+                                
+                                Same button name, different actions!
+                            </p>
+
+                            <h4 style="color: var(--primary); margin: 20px 0 10px 0;">Real-World Analogy:</h4>
+                            <p style="line-height: 1.8;">
+                                You tell three people to "introduce yourself":
+                                • Teacher says: "I teach Math at Lincoln High"
+                                • Doctor says: "I'm a cardiologist at City Hospital"
+                                • Student says: "I'm in 10th grade studying Biology"
+                                
+                                Same request ("introduce yourself"), three different responses.
+                                That's polymorphism!
+                            </p>
+
+                            <h4 style="color: var(--primary); margin: 20px 0 10px 0;">Code Example:</h4>
+                            <div class="code-example">class Warrior:
+    def attack(self):
+        return 25  # Sword damage
+
+class Mage:
+    def attack(self):
+        return 30  # Magic damage
+
+class Archer:
+    def attack(self):
+        return 22  # Arrow damage
+
+# Same method name, different results!
+characters = [Warrior(), Mage(), Archer()]
+
+for char in characters:
+    print(char.attack())
+
+# Output: 25, 30, 22
+# Same call, different behavior!</div>
+
+                            <h4 style="color: var(--primary); margin: 20px 0 10px 0;">Why This Matters:</h4>
+                            <p style="line-height: 1.8;">
+                                I can write code that works with ANY character type without knowing which specific type it is.
+                                
+                                My battle system just calls `character.attack()` and each character does its own thing automatically.
+                                
+                                This makes code flexible and easy to extend!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Template for adding more -->
+                    <div class="tip-box" style="margin-top: 30px;">
+                        <span class="tip-icon">📝</span>
+                        <strong>How to Add:</strong> After learning something new, explain it here in simple terms. Use analogies, real-world examples, and ask yourself: "Could a 10-year-old understand this?"
+                    </div>
+                </div>
+
+                <button class="add-button" onclick="alert('To add Feynman notes: Edit the HTML and copy the concept-card template. Fill in your own simple explanations!')">➕ Add New Feynman Note</button>
+            </div>
+
+            <!-- PROGRESS TRACKER TAB -->
+            <div id="progress" class="tab-content">
+                <h2 class="section-title">Learning Progress Tracker</h2>
+                <p style="color: #666; margin-bottom: 20px;">Track your mastery across all Python concepts</p>
+
+                <div class="concept-card" style="border-left-color: var(--success);">
+                    <h3 class="concept-title">📊 Overall Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%;">30% Complete</div>
+                    </div>
+                    <p style="margin-top: 10px; color: #666;">9 days complete out of estimated 30-day foundation</p>
+                </div>
+
+                <h3 style="margin: 30px 0 20px 0;">Concept Mastery by Category</h3>
+
+                <!-- Python Basics -->
+                <div class="concept-card">
+                    <h4 style="color: var(--dark); margin-bottom: 15px;">🐍 Python Basics</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%;">90%</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tag">Variables ✓</div>
+                        <div class="tag">Data Types ✓</div>
+                        <div class="tag">Operators ✓</div>
+                        <div class="tag">Strings ✓</div>
+                        <div class="tag">Type Conversion ✓</div>
+                    </div>
+                </div>
+
+                <!-- Control Flow -->
+                <div class="concept-card">
+                    <h4 style="color: var(--dark); margin-bottom: 15px;">🔀 Control Flow</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%;">85%</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tag">If/Else ✓</div>
+                        <div class="tag">For Loops ✓</div>
+                        <div class="tag">While Loops ✓</div>
+                        <div class="tag">Break/Continue ✓</div>
+                        <div class="tag">List Comprehensions ✓</div>
+                    </div>
+                </div>
+
+                <!-- Functions -->
+                <div class="concept-card">
+                    <h4 style="color: var(--dark); margin-bottom: 15px;">⚡ Functions</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%;">80%</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tag">Function Definition ✓</div>
+                        <div class="tag">Parameters ✓</div>
+                        <div class="tag">Return Values ✓</div>
+                        <div class="tag">Scope ✓</div>
+                        <div class="tag">Lambda Functions ~</div>
+                        <div class="tag">Decorators</div>
+                    </div>
+                </div>
+
+                <!-- Data Structures -->
+                <div class="concept-card">
+                    <h4 style="color: var(--dark); margin-bottom: 15px;">📦 Data Structures</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;">75%</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tag">Lists ✓</div>
+                        <div class="tag">Dictionaries ✓</div>
+                        <div class="tag">Tuples ✓</div>
+                        <div class="tag">Sets ✓</div>
+                        <div class="tag">List Methods ✓</div>
+                        <div class="tag">Dict Methods ✓</div>
+                    </div>
+                </div>
+
+                <!-- OOP -->
+                <div class="concept-card">
+                    <h4 style="color: var(--dark); margin-bottom: 15px;">🏗️ Object-Oriented Programming</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%;">60%</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tag">Classes ✓</div>
+                        <div class="tag">Objects ✓</div>
+                        <div class="tag">__init__ ✓</div>
+                        <div class="tag">self ✓</div>
+                        <div class="tag">Inheritance ✓</div>
+                        <div class="tag">Polymorphism ✓</div>
+                        <div class="tag">Encapsulation ~</div>
+                        <div class="tag">Abstraction</div>
+                    </div>
+                </div>
+
+                <!-- File I/O -->
+                <div class="concept-card">
+                    <h4 style="color: var(--dark); margin-bottom: 15px;">📁 File I/O & Data</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%;">70%</div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="tag">Reading Files ✓</div>
+                        <div class="tag">Writing Files ✓</div>
+                        <div class="tag">JSON ✓</div>
+                        <div class="tag">CSV ~</div>
+                        <div class="tag">Error Handling ✓</div>
+                    </div>
+                </div>
+
+                <div class="tip-box" style="margin-top: 30px;">
+                    <strong>Legend:</strong><br>
+                    ✓ = Learned and practiced<br>
+                    ~ = Partially learned<br>
+                    (no symbol) = Not yet covered
+                </div>
+
+                <h3 style="margin: 40px 0 20px 0;">🎯 Next Learning Goals</h3>
+                <div class="review-schedule">
+                    <div class="review-item">
+                        <div>
+                            <strong>Master Decorators</strong><br>
+                            <span style="color: #666; font-size: 0.9em;">Advanced function patterns</span>
+                        </div>
+                        <div class="review-status pending">Week 3</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <strong>Learn Flask Basics</strong><br>
+                            <span style="color: #666; font-size: 0.9em;">Web development framework</span>
+                        </div>
+                        <div class="review-status pending">Week 3-4</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <strong>Database Fundamentals</strong><br>
+                            <span style="color: #666; font-size: 0.9em;">SQLite, SQL basics</span>
+                        </div>
+                        <div class="review-status pending">Week 4</div>
+                    </div>
+                    <div class="review-item">
+                        <div>
+                            <strong>APIs and Requests</strong><br>
+                            <span style="color: #666; font-size: 0.9em;">Working with external data</span>
+                        </div>
+                        <div class="review-status pending">Week 5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all nav buttons
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Highlight selected nav button
+            event.target.classList.add('active');
+        }
+
+        // Flashcard Flip
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Filter Flashcards
+        function filterCards(searchTerm) {
+            const cards = document.querySelectorAll('.flashcard');
+            searchTerm = searchTerm.toLowerCase();
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Filter Concepts
+        function filterConcepts(searchTerm) {
+            const concepts = document.querySelectorAll('.concept-card[data-search]');
+            searchTerm = searchTerm.toLowerCase();
+            
+            concepts.forEach(concept => {
+                const searchData = concept.getAttribute('data-search').toLowerCase();
+                const text = concept.textContent.toLowerCase();
+                
+                if (searchData.includes(searchTerm) || text.includes(searchTerm)) {
+                    concept.style.display = 'block';
+                } else {
+                    concept.style.display = 'none';
+                }
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Press 'f' to flip current card (if hovering)
+            if (e.key === 'f') {
+                const hoveredCard = document.querySelector('.flashcard:hover');
+                if (hoveredCard) {
+                    flipCard(hoveredCard);
+                }
+            }
+            
+            // Press '/' to focus search
+            if (e.key === '/') {
+                e.preventDefault();
+                const activeSearch = document.querySelector('.tab-content.active .search-box');
+                if (activeSearch) {
+                    activeSearch.focus();
+                }
+            }
+        });
+
+        // Auto-save scroll position
+        window.addEventListener('scroll', function() {
+            localStorage.setItem('scrollPos', window.scrollY);
+        });
+
+        window.addEventListener('load', function() {
+            const scrollPos = localStorage.getItem('scrollPos');
+            if (scrollPos) {
+                window.scrollTo(0, parseInt(scrollPos));
+            }
+        });
+    </script>
+</body>
+</html>
