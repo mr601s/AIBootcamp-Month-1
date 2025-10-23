@@ -1,0 +1,14 @@
+HOMEWORK REPORT - Marcus
+============================================================
+Date: October 21, 2025
+Start Time: 01:38 PM
+Problems Solved: 2
+
+1. [Basic Arithmetic] 15.0 + 27.0
+   Answer: 42.0
+   Time: 13:38:18
+
+2. [Statistics] Mean of [10.0, 20.0, 30.0, 40.0, 50.0]
+   Answer: 30.0
+   Time: 13:39:28
+
