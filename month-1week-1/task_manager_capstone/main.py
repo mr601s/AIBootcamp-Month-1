@@ -1,25 +1,35 @@
 """
-Task Manager Capstone - Main Application
-Day 14: Week 2 Capstone Project
-
-DEMONSTRATES ALL WEEK 2 SKILLS:
-- OOP (Classes, Inheritance, Polymorphism)
-- Modules (Multi-file architecture)
-- APIs (Weather integration)
-- File I/O (JSON persistence)
+Task Manager - Main Application
+Day 14 Capstone: Week 2 Complete Application
+FIXED VERSION: Added screen clearing for better UX
 """
 
+import os
 from task_manager import TaskManager
-from task_types import WorkTask, PersonalTask, ShoppingTask
+
+
+def clear_screen():
+    """
+    Clear the terminal screen (cross-platform).
+    
+    CONCEPTS:
+    - os.system() for system commands
+    - os.name for platform detection
+    - Cross-platform compatibility
+    """
+    # Windows uses 'cls', Unix/Linux/Mac use 'clear'
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def display_menu():
-    """Display main menu"""
-    print("\n" + "="*60)
-    print(" "*15 + "TASK MANAGER")
-    print(" "*10 + "Week 2 Capstone Project")
+    """Display the main menu with screen clearing."""
+    clear_screen()  # Clear screen before showing menu
     print("="*60)
-    print("\n1. View All Tasks")
+    print("TASK MANAGER".center(60))
+    print("Week 2 Capstone Project".center(60))
+    print("="*60)
+    print()
+    print("1. View All Tasks")
     print("2. View Incomplete Tasks")
     print("3. Add New Task")
     print("4. Complete Task")
@@ -31,140 +41,209 @@ def display_menu():
     print("-"*60)
 
 
-def view_tasks(manager, task_list=None, title="All Tasks"):
-    """Display tasks"""
-    if task_list is None:
-        task_list = manager.get_all_tasks()
+def view_tasks(manager, tasks=None, title="All Tasks"):
+    """Display tasks with improved formatting."""
+    clear_screen()  # Clear before showing tasks
+    print("="*60)
+    print(title.center(60))
+    print("="*60)
     
-    print(f"\n{'='*60}")
-    print(f"{title}")
-    print(f"{'='*60}")
+    if tasks is None:
+        tasks = manager.tasks
     
-    if not task_list:
-        print("No tasks found.")
+    if not tasks:
+        print("\nNo tasks found.")
     else:
-        for i, task in enumerate(task_list):
-            print(f"{i}. {task}")
+        for i, task in enumerate(tasks, 1):
+            print(f"\n{i}. {task}")
+            if hasattr(task, 'project'):
+                print(f"   Project: {task.project}")
+            if hasattr(task, 'location'):
+                print(f"   Location: {task.location}")
+            if hasattr(task, 'items'):
+                print(f"   Items: {', '.join(task.items)}")
+            print(f"   Created: {task.created_at}")
+            if task.completed:
+                print(f"   Completed: {task.completed_at}")
     
-    print(f"{'='*60}")
+    print("="*60)
 
 
 def add_task(manager):
-    """Add a new task"""
-    print("\n" + "-"*60)
-    print("ADD NEW TASK")
+    """Add a new task with improved UX."""
+    clear_screen()
     print("-"*60)
-    print("Task Type:")
-    print("  1. Work Task")
-    print("  2. Personal Task")
-    print("  3. Shopping Task")
-    print("  4. General Task")
+    print("ADD NEW TASK".center(60))
+    print("-"*60)
     
-    task_type = input("\nSelect type (1-4): ").strip()
+    # Task type selection
+    print("\nTask Type:")
+    print("1. Work Task")
+    print("2. Personal Task")
+    print("3. Shopping Task")
+    print("4. General Task")
     
+    type_choice = input("Select type (1-4): ").strip()
+    
+    # Get common fields
     title = input("Task title: ").strip()
     if not title:
-        print("❌ Title required")
+        print("❌ Title cannot be empty!")
+        input("\nPress ENTER to continue...")
         return
     
     description = input("Description (optional): ").strip()
     
+    # Priority selection
     print("\nPriority:")
-    print("  1. Low")
-    print("  2. Medium")
-    print("  3. High")
+    print("1. Low")
+    print("2. Medium")
+    print("3. High")
     priority_choice = input("Select (1-3, default 2): ").strip() or "2"
     priority_map = {"1": "low", "2": "medium", "3": "high"}
     priority = priority_map.get(priority_choice, "medium")
     
-    # Create appropriate task type
-    if task_type == "1":
-        project = input("Project name: ").strip() or "General"
-        task = WorkTask(title, description, priority, project)
-    elif task_type == "2":
-        location = input("Location: ").strip() or "Home"
-        task = PersonalTask(title, description, priority, location)
-    elif task_type == "3":
-        task = ShoppingTask(title, description, priority)
-        items_input = input("Shopping items (comma-separated): ").strip()
-        if items_input:
-            for item in items_input.split(','):
-                task.add_item(item.strip())
+    # Create task based on type
+    if type_choice == "1":
+        project = input("Project name: ").strip()
+        task = manager.add_work_task(title, description, priority, project)
+    elif type_choice == "2":
+        location = input("Location: ").strip()
+        task = manager.add_personal_task(title, description, priority, location)
+    elif type_choice == "3":
+        items_input = input("Items (comma-separated): ").strip()
+        items = [item.strip() for item in items_input.split(",")] if items_input else []
+        task = manager.add_shopping_task(title, description, priority, items)
     else:
-        from task import Task
-        task = Task(title, description, priority)
+        task = manager.add_task(title, description, priority)
     
-    manager.add_task(task)
-    print(f"\n✓ Task '{title}' added successfully!")
+    if task:
+        print(f"\n✓ Task '{title}' added successfully!")
+    else:
+        print("\n❌ Failed to add task")
+    
+    input("\nPress ENTER to continue...")
 
 
 def complete_task(manager):
-    """Mark a task as complete"""
-    view_tasks(manager, manager.get_incomplete_tasks(), "Incomplete Tasks")
+    """Mark a task as complete."""
+    tasks = manager.get_incomplete_tasks()
+    
+    if not tasks:
+        clear_screen()
+        print("\n✓ No incomplete tasks!")
+        input("\nPress ENTER to continue...")
+        return
+    
+    view_tasks(manager, tasks, "Incomplete Tasks")
     
     try:
-        index = int(input("\nEnter task number to complete: "))
-        if manager.complete_task(index):
-            print(f"✓ Task marked as complete!")
+        choice = int(input("\nSelect task number to complete (0 to cancel): "))
+        if choice == 0:
+            return
+        
+        if 1 <= choice <= len(tasks):
+            task = tasks[choice - 1]
+            task.mark_complete()
+            manager.save_tasks()
+            print(f"\n✓ Task '{task.title}' marked as complete!")
         else:
-            print("❌ Invalid task number")
+            print("\n❌ Invalid task number")
     except ValueError:
-        print("❌ Please enter a valid number")
+        print("\n❌ Please enter a valid number")
+    
+    input("\nPress ENTER to continue...")
 
 
 def delete_task(manager):
-    """Delete a task"""
+    """Delete a task."""
     view_tasks(manager)
     
+    if not manager.tasks:
+        input("\nPress ENTER to continue...")
+        return
+    
     try:
-        index = int(input("\nEnter task number to delete: "))
-        if manager.delete_task(index):
-            print(f"✓ Task deleted!")
+        choice = int(input("\nSelect task number to delete (0 to cancel): "))
+        if choice == 0:
+            return
+        
+        if 1 <= choice <= len(manager.tasks):
+            task = manager.tasks[choice - 1]
+            title = task.title
+            manager.delete_task(task)
+            print(f"\n✓ Task '{title}' deleted!")
         else:
-            print("❌ Invalid task number")
+            print("\n❌ Invalid task number")
     except ValueError:
-        print("❌ Please enter a valid number")
+        print("\n❌ Please enter a valid number")
+    
+    input("\nPress ENTER to continue...")
 
 
 def view_statistics(manager):
-    """Display statistics"""
+    """Display task statistics."""
+    clear_screen()
     stats = manager.get_statistics()
     
-    print(f"\n{'='*60}")
-    print("TASK STATISTICS")
-    print(f"{'='*60}")
-    print(f"Total Tasks:         {stats['total']}")
-    print(f"Completed:           {stats['completed']}")
-    print(f"Incomplete:          {stats['incomplete']}")
-    print(f"Completion Rate:     {stats['completion_rate']:.1f}%")
-    print(f"\nPriority Breakdown:")
-    print(f"  High Priority:     {stats['high_priority']}")
-    print(f"  Medium Priority:   {stats['medium_priority']}")
-    print(f"  Low Priority:      {stats['low_priority']}")
-    print(f"{'='*60}")
+    print("="*60)
+    print("TASK STATISTICS".center(60))
+    print("="*60)
+    print(f"\nTotal Tasks: {stats['total']}")
+    print(f"Completed: {stats['completed']}")
+    print(f"Incomplete: {stats['incomplete']}")
+    print(f"Completion Rate: {stats['completion_rate']:.1f}%")
+    
+    print("\n" + "-"*60)
+    print("BY PRIORITY:")
+    for priority, count in stats['by_priority'].items():
+        print(f"  {priority.capitalize()}: {count}")
+    
+    print("\n" + "-"*60)
+    print("BY CATEGORY:")
+    for category, count in stats['by_category'].items():
+        print(f"  {category}: {count}")
+    
+    print("="*60)
+    input("\nPress ENTER to continue...")
 
 
 def get_weather_advice(manager):
-    """Get weather-based task advice"""
-    city = input("\nEnter your city: ").strip() or "New York"
+    """Get weather-based task advice."""
+    clear_screen()
+    print("="*60)
+    print("WEATHER-BASED TASK ADVICE".center(60))
+    print("="*60)
+    
+    city = input("\nEnter your city: ").strip()
+    
+    if not city:
+        print("\n❌ City name cannot be empty!")
+        input("\nPress ENTER to continue...")
+        return
     
     print(f"\nFetching weather for {city}...")
     advice = manager.get_weather_advice(city)
     
-    print(f"\n{'='*60}")
-    print("WEATHER-BASED TASK ADVICE")
-    print(f"{'='*60}")
+    print("\n" + "="*60)
+    print("WEATHER-BASED TASK ADVICE".center(60))
+    print("="*60)
     print(advice)
-    print(f"{'='*60}")
+    print("="*60)
+    
+    input("\nPress ENTER to continue...")
 
 
 def filter_tasks(manager):
-    """Filter tasks by category or priority"""
-    print("\n" + "-"*60)
-    print("FILTER TASKS")
-    print("-"*60)
-    print("1. By Priority")
-    print("2. By Category")
+    """Filter tasks by criteria."""
+    clear_screen()
+    print("="*60)
+    print("FILTER TASKS".center(60))
+    print("="*60)
+    
+    print("\nFilter by:")
+    print("1. Priority")
+    print("2. Category")
     
     choice = input("\nSelect filter (1-2): ").strip()
     
@@ -179,6 +258,7 @@ def filter_tasks(manager):
         if priority:
             tasks = manager.get_tasks_by_priority(priority)
             view_tasks(manager, tasks, f"{priority.capitalize()} Priority Tasks")
+            input("\nPress ENTER to continue...")
     
     elif choice == "2":
         print("\n1. Work")
@@ -191,10 +271,11 @@ def filter_tasks(manager):
         if category:
             tasks = manager.get_tasks_by_category(category)
             view_tasks(manager, tasks, f"{category} Tasks")
+            input("\nPress ENTER to continue...")
 
 
 def main():
-    """Main application loop"""
+    """Main application loop with improved flow."""
     manager = TaskManager()
     
     while True:
@@ -203,8 +284,10 @@ def main():
         
         if choice == "1":
             view_tasks(manager)
+            input("\nPress ENTER to continue...")
         elif choice == "2":
             view_tasks(manager, manager.get_incomplete_tasks(), "Incomplete Tasks")
+            input("\nPress ENTER to continue...")
         elif choice == "3":
             add_task(manager)
         elif choice == "4":
@@ -218,12 +301,12 @@ def main():
         elif choice == "8":
             filter_tasks(manager)
         elif choice == "9":
-            print("\n✓ Tasks saved. Goodbye!")
+            clear_screen()
+            print("\n✓ Tasks saved. Goodbye!\n")
             break
         else:
-            print("❌ Invalid option. Please select 1-9.")
-        
-        input("\nPress ENTER to continue...")
+            print("\n❌ Invalid option. Please select 1-9.")
+            input("\nPress ENTER to continue...")
 
 
 if __name__ == "__main__":
