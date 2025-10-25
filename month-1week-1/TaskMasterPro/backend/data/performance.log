@@ -1,0 +1,7 @@
+{"timestamp": "2025-10-24 20:49:21", "function": "slow_function", "duration_seconds": 0.5443210601806641}
+{"timestamp": "2025-10-24 20:49:21", "function": "slow_function", "duration_seconds": 0.0063211917877197266}
+{"timestamp": "2025-10-24 20:49:30", "function": "slow_function", "duration_seconds": 0.5316891670227051}
+{"timestamp": "2025-10-24 20:49:30", "function": "slow_function", "duration_seconds": 0.0045855045318603516}
+{"timestamp": "2025-10-24 21:01:01", "function": "get_weather", "duration_seconds": 4.127753257751465}
+{"timestamp": "2025-10-24 21:01:19", "function": "add_task", "duration_seconds": 0.026444435119628906}
+{"timestamp": "2025-10-24 21:01:19", "function": "add_task", "duration_seconds": 0.01858687400817871}

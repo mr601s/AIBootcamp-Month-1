@@ -26,7 +26,7 @@ def create_multiplier(n):
     return multiplier
 
 times_2 = create_multiplier(2)
-times_10 = creat_multiplier(10) 
+times_10 = create_multiplier(10) 
 
 print('\nUsing returned functions:')
 print(times_2(5))  # 10
