@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>TaskMasterPro API Test</h1>
+    <button onclick="testAPI()">Test Backend Connection</button>
+    <button onclick="testAddTask()">Test Add Task</button>
+    <button onclick="testWeather()">Test Weather</button>
+    <div id="output" style="margin-top: 20px; padding: 10px; background: #f0f0f0;"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+        const output = document.getElementById('output');
+
+        async function testAPI() {
+            try {
+                output.innerHTML = 'Testing connection...';
+                const response = await fetch(`${API_BASE_URL}/tasks`);
+                const data = await response.json();
+                output.innerHTML = `✅ Connected! Tasks: ${JSON.stringify(data, null, 2)}`;
+                console.log('API Response:', data);
+            } catch (error) {
+                output.innerHTML = `❌ Error: ${error.message}`;
+                console.error('Error:', error);
+            }
+        }
+
+        async function testAddTask() {
+            try {
+                output.innerHTML = 'Adding task...';
+                const response = await fetch(`${API_BASE_URL}/tasks`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: 'Test Task',
+                        category: 'work',
+                        priority: 'high'
+                    })
+                });
+                const data = await response.json();
+                output.innerHTML = `✅ Task added! Response: ${JSON.stringify(data, null, 2)}`;
+                console.log('Add Task Response:', data);
+            } catch (error) {
+                output.innerHTML = `❌ Error: ${error.message}`;
+                console.error('Error:', error);
+            }
+        }
+
+        async function testWeather() {
+            try {
+                output.innerHTML = 'Getting weather...';
+                const response = await fetch(`${API_BASE_URL}/weather`);
+                const data = await response.json();
+                output.innerHTML = `✅ Weather: ${JSON.stringify(data, null, 2)}`;
+                console.log('Weather Response:', data);
+            } catch (error) {
+                output.innerHTML = `❌ Error: ${error.message}`;
+                console.error('Error:', error);
+            }
+        }
+
+        // Test on load
+        window.onload = () => {
+            output.innerHTML = 'Ready! Click buttons to test API.';
+        };
+    </script>
+</body>
+</html>

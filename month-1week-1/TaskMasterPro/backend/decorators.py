@@ -3,7 +3,6 @@ Professional decorators for TaskMasterPro
 Day 15 concepts applied to production application
 """
 
-
 import time
 import functools
 from datetime import datetime

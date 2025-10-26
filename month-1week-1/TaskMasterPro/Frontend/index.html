@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMasterPro - Elite Task Management</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <!-- Header with weather integration -->
+    <header class="app-header">
+        <div class="container">
+            <h1>⚡ TaskMasterPro</h1>
+            <div class="weather-widget" id="weatherWidget">
+                <span class="weather-temp">Loading weather...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main app container -->
+    <main class="container">
+        <!-- Task input section -->
+        <section class="task-input">
+            <h2>Add New Task</h2>
+            <form id="taskForm">
+                <input 
+                    type="text" 
+                    id="taskTitle" 
+                    placeholder="What needs to be done?" 
+                    required
+                    autocomplete="off"
+                >
+                
+                <select id="taskCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="work">💼 Work</option>
+                    <option value="personal">🏠 Personal</option>
+                    <option value="shopping">🛒 Shopping</option>
+                </select>
+                
+                <select id="taskPriority" required>
+                    <option value="">Priority</option>
+                    <option value="high">🔴 High</option>
+                    <option value="medium">🟡 Medium</option>
+                    <option value="low">🟢 Low</option>
+                </select>
+                
+                <button type="submit" class="btn-primary">
+                    ➕ Add Task
+                </button>
+            </form>
+        </section>
+
+        <!-- Statistics dashboard -->
+        <section class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3>Total Tasks</h3>
+                <p class="stat-number" id="totalTasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <p class="stat-number" id="completedTasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>In Progress</h3>
+                <p class="stat-number" id="activeTasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completion Rate</h3>
+                <p class="stat-number" id="completionRate">0%</p>
+            </div>
+        </section>
+
+        <!-- Task filters -->
+        <section class="task-filters">
+            <button class="filter-btn active" data-filter="all">
+                All Tasks
+            </button>
+            <button class="filter-btn" data-filter="work">
+                💼 Work
+            </button>
+            <button class="filter-btn" data-filter="personal">
+                🏠 Personal
+            </button>
+            <button class="filter-btn" data-filter="shopping">
+                🛒 Shopping
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                ✅ Completed
+            </button>
+        </section>
+
+        <!-- Task list -->
+        <section class="task-list" id="taskList">
+            <!-- Tasks will be dynamically inserted here -->
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Built with 🔥 by an Elite Developer | Day 16 Bootcamp Project</p>
+    </footer>
+
+    <script src="JS/app.js"></script>
+</body>
+</html>

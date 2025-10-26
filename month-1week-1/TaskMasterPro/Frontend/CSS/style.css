@@ -1,0 +1,592 @@
+/* =======================================================
+TASKMASTERPRO - CSS LEARNING JOURNEY
+Building this section by section
+======================================================= */
+
+/*========================================================
+CHUNK 1: FOUNDATION
+CSS Variables = Python dictionaries
+========================================================*/
+
+/* Step 1: Define your "config" - like Python global variables */
+:root {
+    /* color Pallette - your design system */
+    --primary-color: #2563eb;  /* Main blue */
+    --primary-dark: #1e40af; /* Darker blue for hover */
+    --primary-light: #3b82f6; /* Lighter blue */
+
+     --success-color: #10b981; /* Green for completed */
+     --warning-color: #f59e0b; /* Orange for medium priority */
+     --danger-color: #ef4444;  /* Red for high priority */
+
+     /* Background colors */
+     --dark-bg: #1f2937; /* Dark gray */
+     --darker-bg: #111827; /* Even darker */
+     --light-bg: #f9fafb; /* Light gray */
+
+     /* Text colors */
+     --text-primary: #111827;  /* Main text */
+     --text-secondary: #6b7280; /* Secondary text */
+     --text-light: #9ca3af; /* Light text */
+
+     /* Spacing system (8px base grid) */
+     --space-xs: 0.5rem; /* 8px */
+     --space-sm: 1rem; /* 16px */
+     --space-md: 1.5rem; /* 24px */
+     --space-lg: 2rem; /* 32px */
+     --space-xl: 3rem; /* 48px */
+
+         /* Border Radius - How rounded corners are */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    
+    /* Shadows - Depth effect */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    
+    /* Transitions - Animation speed */
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+    --transition-slow: 300ms ease;
+}
+
+/* Step 2: Reset browser defaults - like clearing global state */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Step 3: Body styling - Your app's canvas */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacsystemFont, 'Segoe UI', sans-serif;
+        line-height: 1.6;                    /* Space between lines */
+    color: var(--text-primary);          /* Using our variable! */
+    
+    /* Beautiful gradient background */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;                   /* Full viewport height */
+}
+
+/*========================================================
+CHUNK 2: LAYOUT & HEADER
+Making structure beautiful
+========================================================*/
+
+/* Step 1: Container - centers content on screen */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* Step 2: Header - The dark bar at top */
+.app-header {
+    background: var(--darker-bg);
+    color: white;
+    padding: var(--space-lg) 0;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--space-lg);
+}
+
+/* Step 3: Header flex layout - logo left, weather right */
+.app-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Step 4: Main heading */
+.app-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.025cm;
+}
+
+/* Step 5: Weather widget - The glass effect box */
+.weather-widget {
+    background: rgba(255, 255, 255, 0.1);  /* Semi-transparent white */
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-lg);        /* Rounded corners */
+    backdrop-filter: blur(10px);            /* Frosted glass effect */
+}
+
+/* Step 6: Weather text styling */
+.weather-temp {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* ========================================================
+CHUNK 3: TASK & INPUT FORMS
+Making interactions feel premium
+========================================================*/
+
+/* Step 1: Task input container - The white card */
+.task-input {
+    background: white;
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--space-lg);
+}
+
+/* Step 2: Section heading */
+.task-input h2 {
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+}
+
+/* Step 3: From grid layout - The secret to alignment */
+#taskform {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: var(--space-sm);
+    align-items: center;
+}
+
+/* Step 4: Input and select styling - Make them beautiful */
+input[type='text'],
+select {
+    padding: var(--space-sm) var(--space-md);
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    background: white;
+}
+
+/* Step 5: Focus state - When user clicks in field */
+input[type="type"]:focus,
+select:focus {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    outline: none;
+}
+
+/* Step 6: Primary button - The star of the show */
+.btn-primary {
+    background: var(--primary-color);              /* Blue background */
+    color: white;                                   /* White text */
+    border: none;                                   /* No border */
+    padding: var(--space-sm) var(--space-lg);      /* Nice padding */
+    border-radius: var(--radius-md);               /* Rounded */
+    font-size: 1rem;                               /* Readable */
+    font-weight: 600;                              /* Bold text */
+    cursor: pointer;                               /* Show it's clickable */
+    transition: all var(--transition-base);        /* Smooth changes */
+    white-space: nowrap;                           /* Don't wrap text */
+}
+
+/* Step 7: Button hover effect - The magic moment */
+.btn-primary:hover {
+    background: var(--primary-dark);               /* Darker blue */
+    transform: translateY(-2px);                   /* Lift up slightly */
+    box-shadow: var(--shadow-md);                  /* Add shadow */
+}
+
+/* Step 8: Button active (being clicked) */
+.btn-primary:active {
+    transform: translateY(0);                      /* Push back down */
+}
+
+/* =====================================
+   CHUNK 4: STATS, FILTERS & TASK CARDS
+   Making data visualization beautiful
+   ===================================== */
+
+/* ========== STATISTICS GRID ========== */
+
+/* Step 1: Stats container - Responsive grid */
+.stats-grid {
+    display: grid;                                      /* Grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  /* Responsive columns */
+    gap: var(--space-md);                              /* Space between cards */
+    margin-bottom: var(--space-lg);                    /* Space below */
+}
+
+/* Step 2: Individual stat card */
+.stat-card {
+    background: white;                                 /* Clean white */
+    padding: var(--space-lg);                         /* Breathing room */
+    border-radius: var(--radius-lg);                  /* Rounded corners */
+    box-shadow: var(--shadow-md);                     /* Floating effect */
+    text-align: center;                               /* Center everything */
+    transition: transform var(--transition-base);     /* Smooth hover */
+}
+
+/* Step 3: Card hover effect - Lift on hover */
+.stat-card:hover {
+    transform: translateY(-5px);                      /* Lift up 5px */
+    box-shadow: var(--shadow-lg);                     /* Bigger shadow */
+}
+
+/* Step 4: Stat card heading */
+.stat-card h3 {
+    color: var(--text-secondary);                     /* Gray text */
+    font-size: 0.875rem;                              /* Small */
+    font-weight: 600;                                 /* Bold */
+    text-transform: uppercase;                        /* ALL CAPS */
+    letter-spacing: 0.05em;                           /* Slightly spread */
+    margin-bottom: var(--space-sm);                   /* Space below */
+}
+
+/* Step 5: The big number - The star of the card */
+.stat-number {
+    font-size: 2.5rem;                                /* BIG */
+    font-weight: 700;                                 /* Extra bold */
+    color: var(--primary-color);                      /* Blue color */
+    line-height: 1;                                   /* Tight spacing */
+}
+
+/* ========== TASK FILTERS ========== */
+
+/* Step 6: Filter button container */
+.task-filters {
+    display: flex;                                    /* Flex layout */
+    gap: var(--space-sm);                            /* Space between buttons */
+    margin-bottom: var(--space-lg);                  /* Space below */
+    flex-wrap: wrap;                                 /* Wrap on small screens */
+}
+
+/* Step 7: Individual filter button */
+.filter-btn {
+    padding: var(--space-sm) var(--space-md);        /* Comfortable padding */
+    border: 2px solid white;                          /* White border */
+    background: rgba(255, 255, 255, 0.9);            /* Semi-transparent white */
+    border-radius: var(--radius-md);                 /* Rounded */
+    font-size: 0.95rem;                              /* Readable */
+    font-weight: 600;                                /* Bold */
+    cursor: pointer;                                 /* Show clickable */
+    transition: all var(--transition-base);          /* Smooth changes */
+}
+
+/* Step 8: Filter button hover */
+.filter-btn:hover {
+    background: white;                                /* Full white */
+    transform: translateY(-2px);                      /* Lift slightly */
+    box-shadow: var(--shadow-md);                     /* Add shadow */
+}
+
+/* Step 9: Active filter (selected) */
+.filter-btn.active {
+    background: var(--primary-color);                 /* Blue background */
+    color: white;                                     /* White text */
+    border-color: var(--primary-color);              /* Blue border */
+}
+
+/* ========== TASK LIST ========== */
+
+/* Step 10: Task list container */
+.task-list {
+    display: flex;                                    /* Flex layout */
+    flex-direction: column;                           /* Stack vertically */
+    gap: var(--space-md);                            /* Space between tasks */
+    margin-bottom: var(--space-xl);                  /* Space below */
+}
+
+/* Step 11: Individual task item */
+.task-item {
+    background: white;                                /* White background */
+    padding: var(--space-lg);                        /* Good padding */
+    border-radius: var(--radius-lg);                 /* Rounded corners */
+    box-shadow: var(--shadow-md);                    /* Floating effect */
+    display: flex;                                    /* Flex for layout */
+    align-items: center;                             /* Center vertically */
+    gap: var(--space-md);                            /* Space between elements */
+    transition: all var(--transition-base);          /* Smooth changes */
+}
+
+/* Step 12: Task hover effect */
+.task-item:hover {
+    box-shadow: var(--shadow-lg);                    /* Bigger shadow */
+    transform: translateX(5px);                       /* Slide right slightly */
+}
+
+/* Step 13: Completed task appearance */
+.task-item.completed {
+    opacity: 0.6;                                     /* Faded out */
+    background: #f3f4f6;                             /* Light gray */
+}
+
+.task-item.completed .task-title {
+    text-decoration: line-through;                    /* Strike through */
+    color: var(--text-secondary);                    /* Gray text */
+}
+
+/* Step 14: Task checkbox */
+.task-checkbox {
+    width: 24px;                                      /* Fixed size */
+    height: 24px;                                     /* Square */
+    border: 2px solid var(--primary-color);          /* Blue border */
+    border-radius: var(--radius-sm);                 /* Slightly rounded */
+    cursor: pointer;                                  /* Show clickable */
+    transition: all var(--transition-fast);          /* Quick change */
+    flex-shrink: 0;                                  /* Don't shrink */
+}
+
+.task-checkbox:hover {
+    background: rgba(37, 99, 235, 0.1);              /* Light blue on hover */
+}
+
+.task-item.completed .task-checkbox {
+    background: var(--success-color);                 /* Green background */
+    border-color: var(--success-color);              /* Green border */
+}
+
+/* Step 15: Task content area */
+.task-content {
+    flex: 1;                                          /* Take remaining space */
+}
+
+.task-title {
+    font-size: 1.1rem;                               /* Slightly bigger */
+    font-weight: 600;                                /* Bold */
+    color: var(--text-primary);                      /* Dark text */
+    margin-bottom: var(--space-xs);                  /* Space below */
+}
+
+/* Step 16: Task metadata (category, priority) */
+.task-meta {
+    display: flex;                                    /* Flex layout */
+    gap: var(--space-md);                            /* Space between badges */
+    font-size: 0.875rem;                             /* Smaller text */
+    color: var(--text-secondary);                    /* Gray */
+}
+
+/* Step 17: Category and priority badges */
+.task-category,
+.task-priority {
+    padding: 0.25rem 0.75rem;                        /* Compact padding */
+    border-radius: var(--radius-sm);                 /* Slightly rounded */
+    font-weight: 600;                                /* Bold */
+}
+
+.task-category {
+    background: #dbeafe;                             /* Light blue */
+    color: #1e40af;                                  /* Dark blue text */
+}
+
+/* Step 18: Priority color coding */
+.task-priority.high {
+    background: #fee2e2;                             /* Light red */
+    color: #991b1b;                                  /* Dark red text */
+}
+
+.task-priority.medium {
+    background: #fef3c7;                             /* Light yellow */
+    color: #92400e;                                  /* Dark yellow text */
+}
+
+.task-priority.low {
+    background: #d1fae5;                             /* Light green */
+    color: #065f46;                                  /* Dark green text */
+}
+
+/* Step 19: Task action buttons */
+.task-actions {
+    display: flex;                                    /* Flex layout */
+    gap: var(--space-sm);                            /* Space between buttons */
+}
+
+.task-btn {
+    padding: var(--space-sm);                        /* Square-ish */
+    border: none;                                     /* No border */
+    background: #f3f4f6;                             /* Light gray */
+    border-radius: var(--radius-sm);                 /* Slightly rounded */
+    cursor: pointer;                                  /* Show clickable */
+    transition: all var(--transition-fast);          /* Quick changes */
+    font-size: 1.2rem;                               /* Bigger icon text */
+}
+
+.task-btn:hover {
+    background: #e5e7eb;                             /* Darker gray */
+    transform: scale(1.1);                           /* Grow slightly */
+}
+
+.task-btn.delete {
+    color: var(--danger-color);                      /* Red text */
+}
+
+.task-btn.delete:hover {
+    background: #fee2e2;                             /* Light red background */
+}
+
+/* ========== EMPTY STATE ========== */
+
+/* Step 20: When no tasks exist */
+.empty-state {
+    text-align: center;                              /* Center text */
+    padding: var(--space-xl);                        /* Lots of padding */
+    background: white;                                /* White background */
+    border-radius: var(--radius-lg);                 /* Rounded */
+    box-shadow: var(--shadow-md);                    /* Shadow */
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;                               /* Big heading */
+    color: var(--text-secondary);                    /* Gray */
+    margin-bottom: var(--space-sm);                  /* Space below */
+}
+
+.empty-state p {
+    color: var(--text-light);                        /* Light gray */
+}
+
+/* ========================================================
+CHUNK 5: POLISH & RESPONSIVE
+The finishing touches
+========================================================*/
+
+/* =============== FOOTER =============== */
+
+/* Step 1: Footer styling */
+.app-footer {
+    background: var(--darker-bg);
+    color: white;
+    text-align: center;
+    padding: var(--space-lg);
+    margin-top: var(--space-xl);
+}
+
+.app-footer p {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+/* =============== Animations =============== */
+
+/* Step 2: Slide-in animation for new tasks */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Step 3: Apply animation to tasks */
+.task-item {
+    animation: slideIn 0.3s ease forwards;
+}
+
+/* Step 4: Loading spinner animation */
+.loading {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--primary-color);
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =============== responsive Desing =============== */
+
+/* Step 5: Tablet and smaller (<= 768px) */
+/* Step 5: Tablet and smaller (768px and below) */
+@media (max-width: 768px) {
+    /* Stack form inputs vertically */
+    #taskForm {
+        grid-template-columns: 1fr;                  /* One column */
+    }
+    
+    /* Stack header items */
+    .app-header .container {
+        flex-direction: column;                      /* Stack vertically */
+        gap: var(--space-md);                       /* Space between */
+        text-align: center;                         /* Center text */
+    }
+    
+    /* Stats - 2 columns on tablet */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);      /* Two columns */
+    }
+    
+    /* Task items - stack content */
+    .task-item {
+        flex-direction: column;                      /* Stack vertically */
+        align-items: flex-start;                    /* Align to left */
+    }
+    
+    /* Task actions - full width */
+    .task-actions {
+        width: 100%;                                 /* Full width */
+        justify-content: flex-end;                  /* Push to right */
+    }
+}
+
+/* Step 6: Mobile (480px and below) */
+@media (max-width: 480px) {
+    /* Stats - single column on phone */
+    .stats-grid {
+        grid-template-columns: 1fr;                  /* One column */
+    }
+    
+    /* Filter buttons - full width */
+    .filter-btn {
+        flex: 1;                                     /* Equal width */
+        text-align: center;                         /* Center text */
+    }
+    
+    /* Smaller heading */
+    .app-header h1 {
+        font-size: 1.5rem;                          /* Smaller on mobile */
+    }
+    
+    /* Adjust padding */
+    .container {
+        padding: 0 var(--space-sm);                 /* Less padding */
+    }
+}
+
+/* ========== ACCESSIBILITY ========== */
+
+/* Step 7: Focus visible for keyboard navigation */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);        /* Blue outline */
+    outline-offset: 2px;                            /* Space from element */
+}
+
+/* Step 8: Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;      /* Nearly instant */
+        animation-iteration-count: 1 !important;    /* No loops */
+        transition-duration: 0.01ms !important;     /* Nearly instant */
+    }
+}
+
+/* ========== PRINT STYLES ========== */
+
+/* Step 9: Clean printing (bonus!) */
+@media print {
+    body {
+        background: white;                           /* White for printing */
+    }
+    
+    .app-header,
+    .app-footer,
+    .task-input,
+    .filter-btn {
+        display: none;                               /* Hide interactive elements */
+    }
+    
+    .task-item {
+        break-inside: avoid;                        /* Don't split tasks across pages */
+    }
+}
