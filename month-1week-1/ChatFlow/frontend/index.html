@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatFlow - Real-Time Chat</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Username Entry Screen -->
+    <div id="usernameScreen" class="screen active">
+        <div class="username-container">
+            <h1>💬 ChatFlow</h1>
+            <p>Enter your name to start chatting</p>
+            <input 
+                type="text" 
+                id="usernameInput" 
+                placeholder="Your name..."
+                maxlength="20"
+                autocomplete="off"
+            >
+            <button id="joinButton" class="btn-primary">
+                Join Chat
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div id="chatScreen" class="screen">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <h2>💬 ChatFlow</h2>
+            <div class="user-info">
+                <span id="currentUsername">Guest</span>
+                <span class="status-indicator online"></span>
+            </div>
+        </div>
+
+        <!-- Messages Container -->
+        <div id="messagesContainer" class="messages-container">
+            <!-- Messages will be dynamically inserted here -->
+        </div>
+
+        <!-- Message Input -->
+        <div class="message-input-container">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Type a message..."
+                autocomplete="off"
+            >
+            <button id="sendButton" class="btn-send">
+                Send
+            </button>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div id="typingIndicator" class="typing-indicator hidden">
+            <span class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            <span class="typing-text">Someone is typing...</span>
+        </div>
+    </div>
+
+    <!-- Socket.IO Client Library -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
+    <!-- Our Chat Application -->
+    <script src="js/app.js"></script>
+</body>
+</html>
