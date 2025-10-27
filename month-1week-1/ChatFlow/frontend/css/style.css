@@ -1,5 +1,5 @@
 /* ========================================
-   CHATFLOW - REAL-TIME CHAT STYLING
+   CHATFLOW 2.0 - WITH AUTHENTICATION
    ======================================== */
 
 /* CSS Variables */
@@ -55,7 +55,7 @@ body {
 .screen {
     display: none;
     width: 100%;
-    max-width: 800px;
+    max-width: 1200px;
     height: 90vh;
     background: white;
     border-radius: var(--radius-lg);
@@ -69,10 +69,10 @@ body {
 }
 
 /* ========================================
-   USERNAME SCREEN
+   AUTHENTICATION SCREEN
    ======================================== */
 
-.username-container {
+.auth-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,34 +82,86 @@ body {
     text-align: center;
 }
 
-.username-container h1 {
+.auth-container h1 {
     font-size: 3rem;
     margin-bottom: var(--space-sm);
     color: var(--text-dark);
 }
 
-.username-container p {
+.auth-subtitle {
     color: var(--text-muted);
     margin-bottom: var(--space-lg);
     font-size: 1.1rem;
 }
 
-#usernameInput {
+/* Auth Tabs */
+.auth-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    background: var(--bg-light);
+    padding: 0.25rem;
+    border-radius: var(--radius-md);
+}
+
+.auth-tab {
+    padding: var(--space-sm) var(--space-lg);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-muted);
+}
+
+.auth-tab.active {
+    background: white;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Auth Forms */
+.auth-form {
+    display: none;
+    flex-direction: column;
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
+    gap: var(--space-md);
+}
+
+.auth-form.active {
+    display: flex;
+}
+
+.auth-input {
+    width: 100%;
     padding: var(--space-md);
     border: 2px solid #e2e8f0;
     border-radius: var(--radius-md);
     font-size: 1rem;
-    margin-bottom: var(--space-md);
     transition: border-color 0.2s;
 }
 
-#usernameInput:focus {
+.auth-input:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
+.auth-error {
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    min-height: 1.25rem;
+}
+
+.auth-info {
+    margin-top: var(--space-lg);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* Buttons */
 .btn-primary {
     padding: var(--space-md) var(--space-lg);
     background: var(--primary-color);
@@ -128,6 +180,12 @@ body {
     box-shadow: var(--shadow-md);
 }
 
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
 /* ========================================
    CHAT SCREEN
    ======================================== */
@@ -141,8 +199,20 @@ body {
     align-items: center;
 }
 
-.chat-header h2 {
+.header-left h2 {
     font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.user-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
 }
 
 .user-info {
@@ -151,27 +221,108 @@ body {
     gap: var(--space-sm);
 }
 
-.status-indicator {
-    width: 10px;
-    height: 10px;
+.user-avatar {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
 }
 
-.status-indicator.online {
-    background: var(--success-color);
-    box-shadow: 0 0 10px var(--success-color);
+.btn-logout {
+    padding: var(--space-sm) var(--space-md);
+    background: transparent;
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-/* ========================================
-   MESSAGES CONTAINER
-   ======================================== */
+.btn-logout:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Chat Body Layout */
+.chat-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: var(--bg-light);
+    border-right: 1px solid #e2e8f0;
+    padding: var(--space-md);
+    overflow-y: auto;
+}
+
+.sidebar h3 {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+    font-weight: 600;
+}
+
+.online-users {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.online-user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.online-user:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.online-user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.online-user-name {
+    font-size: 0.875rem;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Messages Section */
+.messages-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
 
 .messages-container {
     flex: 1;
     overflow-y: auto;
     padding: var(--space-md);
-    background: var(--bg-light);
+    background: white;
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
@@ -217,6 +368,18 @@ body {
     font-size: 0.875rem;
 }
 
+.message-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
 .message-username {
     font-weight: 600;
     color: var(--text-dark);
@@ -253,10 +416,7 @@ body {
     padding: var(--space-xs) var(--space-md);
 }
 
-/* ========================================
-   MESSAGE INPUT
-   ======================================== */
-
+/* Message Input */
 .message-input-container {
     display: flex;
     gap: var(--space-sm);
@@ -295,50 +455,42 @@ body {
 }
 
 /* ========================================
-   TYPING INDICATOR
+   NOTIFICATION TOAST
    ======================================== */
 
-.typing-indicator {
-    padding: var(--space-sm) var(--space-md);
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    background: white;
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-darker);
+    color: white;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
 }
 
-.typing-indicator.hidden {
+.notification-toast.hidden {
     display: none;
 }
 
-.typing-dots {
-    display: flex;
-    gap: 4px;
+.notification-toast.success {
+    background: var(--success-color);
 }
 
-.typing-dots span {
-    width: 6px;
-    height: 6px;
-    background: var(--text-muted);
-    border-radius: 50%;
-    animation: typing 1.4s infinite;
+.notification-toast.error {
+    background: var(--danger-color);
 }
 
-.typing-dots span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-dots span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes typing {
-    0%, 60%, 100% {
-        transform: translateY(0);
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
     }
-    30% {
-        transform: translateY(-10px);
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 
@@ -346,20 +498,24 @@ body {
    SCROLLBAR STYLING
    ======================================== */
 
-.messages-container::-webkit-scrollbar {
+.messages-container::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
     width: 8px;
 }
 
-.messages-container::-webkit-scrollbar-track {
+.messages-container::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-.messages-container::-webkit-scrollbar-thumb {
+.messages-container::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
     background: #cbd5e0;
     border-radius: 4px;
 }
 
-.messages-container::-webkit-scrollbar-thumb:hover {
+.messages-container::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
     background: #a0aec0;
 }
 
@@ -374,7 +530,15 @@ body {
         border-radius: 0;
     }
     
+    .sidebar {
+        display: none; /* Hide sidebar on mobile */
+    }
+    
     .message {
         max-width: 85%;
+    }
+    
+    .auth-container h1 {
+        font-size: 2rem;
     }
 }

@@ -3,25 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatFlow - Real-Time Chat</title>
+    <title>ChatFlow - Real-Time Chat with Authentication</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Username Entry Screen -->
-    <div id="usernameScreen" class="screen active">
-        <div class="username-container">
+    <!-- Login/Register Screen -->
+    <div id="authScreen" class="screen active">
+        <div class="auth-container">
             <h1>💬 ChatFlow</h1>
-            <p>Enter your name to start chatting</p>
-            <input 
-                type="text" 
-                id="usernameInput" 
-                placeholder="Your name..."
-                maxlength="20"
-                autocomplete="off"
-            >
-            <button id="joinButton" class="btn-primary">
-                Join Chat
-            </button>
+            <p class="auth-subtitle">Secure Real-Time Chat</p>
+
+            <!-- Tab Switcher -->
+            <div class="auth-tabs">
+                <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">
+                    Login
+                </button>
+                <button id="registerTab" class="auth-tab" onclick="switchAuthTab('register')">
+                    Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <input 
+                    type="text" 
+                    id="loginUsername" 
+                    class="auth-input"
+                    placeholder="Username"
+                    autocomplete="off"
+                >
+                <input 
+                    type="password" 
+                    id="loginPassword" 
+                    class="auth-input"
+                    placeholder="Password"
+                >
+                <button id="loginButton" class="btn-primary" onclick="handleLogin()">
+                    Login
+                </button>
+                <p id="loginError" class="auth-error"></p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form">
+                <input 
+                    type="text" 
+                    id="registerUsername" 
+                    class="auth-input"
+                    placeholder="Username (min 3 characters)"
+                    autocomplete="off"
+                >
+                <input 
+                    type="password" 
+                    id="registerPassword" 
+                    class="auth-input"
+                    placeholder="Password (min 6 characters)"
+                >
+                <input 
+                    type="password" 
+                    id="registerConfirmPassword" 
+                    class="auth-input"
+                    placeholder="Confirm Password"
+                >
+                <button id="registerButton" class="btn-primary" onclick="handleRegister()">
+                    Create Account
+                </button>
+                <p id="registerError" class="auth-error"></p>
+            </div>
+
+            <p class="auth-info">
+                🔐 Your password is encrypted and secure
+            </p>
         </div>
     </div>
 
@@ -29,40 +81,55 @@
     <div id="chatScreen" class="screen">
         <!-- Chat Header -->
         <div class="chat-header">
-            <h2>💬 ChatFlow</h2>
-            <div class="user-info">
-                <span id="currentUsername">Guest</span>
-                <span class="status-indicator online"></span>
+            <div class="header-left">
+                <h2>💬 ChatFlow</h2>
+                <span class="user-count" id="userCount">0 users online</span>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar" id="currentUserAvatar"></div>
+                    <span id="currentUsername">Guest</span>
+                </div>
+                <button class="btn-logout" onclick="handleLogout()">
+                    Logout
+                </button>
             </div>
         </div>
 
-        <!-- Messages Container -->
-        <div id="messagesContainer" class="messages-container">
-            <!-- Messages will be dynamically inserted here -->
-        </div>
+        <div class="chat-body">
+            <!-- Online Users Sidebar -->
+            <div class="sidebar">
+                <h3>👥 Online Now</h3>
+                <div id="onlineUsersList" class="online-users">
+                    <!-- Dynamic user list -->
+                </div>
+            </div>
 
-        <!-- Message Input -->
-        <div class="message-input-container">
-            <input 
-                type="text" 
-                id="messageInput" 
-                placeholder="Type a message..."
-                autocomplete="off"
-            >
-            <button id="sendButton" class="btn-send">
-                Send
-            </button>
-        </div>
+            <!-- Messages Container -->
+            <div class="messages-section">
+                <div id="messagesContainer" class="messages-container">
+                    <!-- Messages will be dynamically inserted here -->
+                </div>
 
-        <!-- Typing Indicator -->
-        <div id="typingIndicator" class="typing-indicator hidden">
-            <span class="typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-            </span>
-            <span class="typing-text">Someone is typing...</span>
+                <!-- Message Input -->
+                <div class="message-input-container">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="Type a message..."
+                        autocomplete="off"
+                    >
+                    <button id="sendButton" class="btn-send" onclick="handleSendMessage()">
+                        Send
+                    </button>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification-toast hidden">
+        <span id="notificationText"></span>
     </div>
 
     <!-- Socket.IO Client Library -->
