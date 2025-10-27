@@ -10,7 +10,7 @@ from datetime import datetime
 import os
 
 # Import our user manager
-from user_management import UserManager
+from user_manager import UserManager
 
 # Initialize Flask app
 app = Flask(__name__)

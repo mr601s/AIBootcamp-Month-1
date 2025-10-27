@@ -111,8 +111,11 @@
                     <!-- Messages will be dynamically inserted here -->
                 </div>
 
-                <!-- Message Input -->
+                <!-- Message Input with Emoji Button -->
                 <div class="message-input-container">
+                    <button id="emojiButton" class="btn-emoji" onclick="toggleEmojiPicker()">
+                        😊
+                    </button>
                     <input 
                         type="text" 
                         id="messageInput" 
@@ -122,6 +125,23 @@
                     <button id="sendButton" class="btn-send" onclick="handleSendMessage()">
                         Send
                     </button>
+                </div>
+
+                <!-- Emoji Picker Popup -->
+                <div id="emojiPicker" class="emoji-picker hidden">
+                    <div class="emoji-header">
+                        <span class="emoji-title">Choose an emoji</span>
+                        <button class="emoji-close" onclick="toggleEmojiPicker()">✕</button>
+                    </div>
+                    <div class="emoji-categories">
+                        <button class="emoji-category active" onclick="showEmojiCategory('smileys')">😊</button>
+                        <button class="emoji-category" onclick="showEmojiCategory('gestures')">👍</button>
+                        <button class="emoji-category" onclick="showEmojiCategory('hearts')">❤️</button>
+                        <button class="emoji-category" onclick="showEmojiCategory('objects')">🎉</button>
+                    </div>
+                    <div id="emojiGrid" class="emoji-grid">
+                        <!-- Emojis will be dynamically inserted here -->
+                    </div>
                 </div>
             </div>
         </div>

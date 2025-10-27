@@ -1,6 +1,6 @@
 /**
  * CHATFLOW 2.0 - REAL-TIME CHAT WITH AUTHENTICATION
- * Frontend: Socket.IO Client + Authentication + Chat Logic
+ * Frontend: Socket.IO Client + Authentication + Chat Logic + Emojis
  */
 
 // ========================================
@@ -56,6 +56,131 @@ const notificationToast = document.getElementById('notificationToast');
 const notificationText = document.getElementById('notificationText');
 
 // ========================================
+// EMOJI PICKER FUNCTIONALITY
+// ========================================
+
+/**
+ * Emoji collections by category
+ */
+const EMOJIS = {
+    smileys: [
+        '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂',
+        '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩',
+        '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪',
+        '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨',
+        '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥',
+        '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕',
+        '🤢', '🤮', '🤧', '🥵', '🥶', '😵', '🤯', '🤠',
+        '🥳', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️'
+    ],
+    gestures: [
+        '👍', '👎', '👊', '✊', '🤛', '🤜', '🤞', '✌️',
+        '🤟', '🤘', '👌', '🤏', '👈', '👉', '👆', '👇',
+        '☝️', '✋', '🤚', '🖐️', '🖖', '👋', '🤙', '💪',
+        '🦾', '✍️', '🙏', '🦶', '🦵', '👂', '🦻', '👃',
+        '🧠', '🦷', '🦴', '👀', '👁️', '👅', '👄', '💋',
+        '🩸', '👶', '👧', '🧒', '👦', '👩', '🧑', '👨'
+    ],
+    hearts: [
+        '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍',
+        '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖',
+        '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️',
+        '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈',
+        '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐',
+        '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️'
+    ],
+    objects: [
+        '🎉', '🎊', '🎈', '🎁', '🏆', '🥇', '🥈', '🥉',
+        '⚽', '⚾', '🥎', '🏀', '🏐', '🏈', '🏉', '🎾',
+        '🥏', '🎳', '🏏', '🏑', '🏒', '🥍', '🏓', '🏸',
+        '🥊', '🥋', '🥅', '⛳', '⛸️', '🎣', '🤿', '🎽',
+        '🎿', '🛷', '🥌', '🎯', '🪀', '🪁', '🎱', '🔮',
+        '🪄', '🧿', '🎮', '🕹️', '🎰', '🎲', '🧩', '🧸'
+    ]
+};
+
+/**
+ * Current emoji category
+ */
+let currentEmojiCategory = 'smileys';
+
+/**
+ * Toggle emoji picker visibility
+ */
+function toggleEmojiPicker() {
+    const emojiPicker = document.getElementById('emojiPicker');
+    const isHidden = emojiPicker.classList.contains('hidden');
+    
+    if (isHidden) {
+        emojiPicker.classList.remove('hidden');
+        renderEmojis(currentEmojiCategory);
+    } else {
+        emojiPicker.classList.add('hidden');
+    }
+}
+
+/**
+ * Show specific emoji category
+ */
+function showEmojiCategory(category) {
+    currentEmojiCategory = category;
+    
+    // Update active category button
+    document.querySelectorAll('.emoji-category').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Render emojis for this category
+    renderEmojis(category);
+}
+
+/**
+ * Render emojis for selected category
+ */
+function renderEmojis(category) {
+    const emojiGrid = document.getElementById('emojiGrid');
+    const emojis = EMOJIS[category] || EMOJIS.smileys;
+    
+    emojiGrid.innerHTML = '';
+    
+    emojis.forEach(emoji => {
+        const button = document.createElement('button');
+        button.className = 'emoji-item';
+        button.textContent = emoji;
+        button.onclick = () => insertEmoji(emoji);
+        emojiGrid.appendChild(button);
+    });
+}
+
+/**
+ * Insert emoji into message input
+ */
+function insertEmoji(emoji) {
+    const input = messageInput;
+    const startPos = input.selectionStart;
+    const endPos = input.selectionEnd;
+    const currentValue = input.value;
+    
+    // Insert emoji at cursor position
+    const newValue = currentValue.substring(0, startPos) + 
+                     emoji + 
+                     currentValue.substring(endPos);
+    
+    input.value = newValue;
+    
+    // Move cursor after emoji
+    const newCursorPos = startPos + emoji.length;
+    input.setSelectionRange(newCursorPos, newCursorPos);
+    
+    // Focus back on input
+    input.focus();
+    
+    // Close emoji picker
+    toggleEmojiPicker();
+}
+
+// ========================================
 // AUTHENTICATION FUNCTIONS
 // ========================================
 
@@ -93,16 +218,13 @@ async function handleLogin() {
     const username = loginUsername.value.trim();
     const password = loginPassword.value;
     
-    // Clear previous errors
     loginError.textContent = '';
     
-    // Validation
     if (!username || !password) {
         loginError.textContent = 'Please enter username and password';
         return;
     }
     
-    // Disable button
     loginButton.disabled = true;
     loginButton.textContent = 'Logging in...';
     
@@ -118,19 +240,14 @@ async function handleLogin() {
         const data = await response.json();
         
         if (data.success) {
-            // Store user data
             AppState.username = username;
             AppState.userData = data.user;
             AppState.isAuthenticated = true;
             
-            // Save to localStorage for persistence
             localStorage.setItem('chatflow_username', username);
             localStorage.setItem('chatflow_user_data', JSON.stringify(data.user));
             
-            // Show success notification
             showNotification(data.message, 'success');
-            
-            // Connect to chat
             connectToChat();
             
         } else {
@@ -154,10 +271,8 @@ async function handleRegister() {
     const password = registerPassword.value;
     const confirmPassword = registerConfirmPassword.value;
     
-    // Clear previous errors
     registerError.textContent = '';
     
-    // Validation
     if (!username || !password || !confirmPassword) {
         registerError.textContent = 'Please fill in all fields';
         return;
@@ -178,7 +293,6 @@ async function handleRegister() {
         return;
     }
     
-    // Disable button
     registerButton.disabled = true;
     registerButton.textContent = 'Creating account...';
     
@@ -194,15 +308,11 @@ async function handleRegister() {
         const data = await response.json();
         
         if (data.success) {
-            // Show success notification
             showNotification(data.message + ' Please login.', 'success');
-            
-            // Switch to login tab and pre-fill username
             switchAuthTab('login');
             loginUsername.value = username;
             loginPassword.focus();
             
-            // Clear register form
             registerUsername.value = '';
             registerPassword.value = '';
             registerConfirmPassword.value = '';
@@ -224,13 +334,11 @@ async function handleRegister() {
  * Handle user logout
  */
 function handleLogout() {
-    // Disconnect socket
     if (socket) {
         socket.disconnect();
         socket = null;
     }
     
-    // Clear state
     AppState.username = null;
     AppState.userData = null;
     AppState.isAuthenticated = false;
@@ -238,24 +346,19 @@ function handleLogout() {
     AppState.messages = [];
     AppState.onlineUsers = [];
     
-    // Clear localStorage
     localStorage.removeItem('chatflow_username');
     localStorage.removeItem('chatflow_user_data');
     
-    // Clear messages
     messagesContainer.innerHTML = '';
     onlineUsersList.innerHTML = '';
     
-    // Switch screens
     chatScreen.classList.remove('active');
     authScreen.classList.add('active');
     
-    // Clear login form
     loginPassword.value = '';
     
     showNotification('Logged out successfully', 'success');
 }
-
 // ========================================
 // CHAT CONNECTION FUNCTIONS
 // ========================================
@@ -264,24 +367,19 @@ function handleLogout() {
  * Connect to chat with Socket.IO
  */
 function connectToChat() {
-    // Initialize Socket.IO connection
     socket = io(API_BASE_URL, {
         transports: ['websocket', 'polling']
     });
     
-    // Setup socket event handlers
     setupSocketHandlers();
     
-    // Switch to chat screen
     authScreen.classList.remove('active');
     chatScreen.classList.add('active');
     
-    // Update UI with user info
     currentUsername.textContent = AppState.username;
     currentUserAvatar.style.backgroundColor = AppState.userData.avatar_color;
     currentUserAvatar.textContent = AppState.username.charAt(0).toUpperCase();
     
-    // Focus message input
     messageInput.focus();
 }
 
@@ -289,76 +387,59 @@ function connectToChat() {
  * Setup Socket.IO event handlers
  */
 function setupSocketHandlers() {
-    // Connection established
     socket.on('connect', () => {
         console.log('🟢 Connected to ChatFlow server!');
         AppState.isConnected = true;
         
-        // Notify server of authenticated user
         socket.emit('user_login', {
             username: AppState.username
         });
         
-        // Request online users list
         socket.emit('get_online_users');
     });
     
-    // Connection lost
     socket.on('disconnect', () => {
         console.log('🔴 Disconnected from server');
         AppState.isConnected = false;
         addSystemMessage('Connection lost. Trying to reconnect...');
     });
     
-    // Initial connection message
     socket.on('message', (data) => {
         console.log('📨 Message from server:', data);
     });
     
-    // User joined notification
     socket.on('user_joined', (data) => {
         console.log('👤 User joined:', data.username);
         
-        // Update user count
         userCount.textContent = `${data.user_count} user${data.user_count !== 1 ? 's' : ''} online`;
         
-        // Show notification if not yourself
         if (data.username !== AppState.username) {
             addSystemMessage(`${data.username} joined the chat`);
         }
         
-        // Request updated online users list
         socket.emit('get_online_users');
     });
     
-    // User left notification
     socket.on('user_left', (data) => {
         console.log('👋 User left:', data.username);
         
-        // Update user count
         userCount.textContent = `${data.user_count} user${data.user_count !== 1 ? 's' : ''} online`;
         
         addSystemMessage(`${data.username} left the chat`);
         
-        // Request updated online users list
         socket.emit('get_online_users');
     });
     
-    // New message received
     socket.on('new_message', (data) => {
         console.log('💬 New message:', data);
         
-        // Determine if message is from current user
         const isOwnMessage = data.username === AppState.username;
         
-        // Add to messages array
         AppState.messages.push(data);
         
-        // Display message
         addChatMessage(data, isOwnMessage);
     });
     
-    // Online users list received
     socket.on('online_users_list', (data) => {
         console.log('👥 Online users:', data);
         AppState.onlineUsers = data.users;
@@ -376,7 +457,6 @@ function setupSocketHandlers() {
 function handleSendMessage() {
     const messageText = messageInput.value.trim();
     
-    // Validation
     if (!messageText) {
         return;
     }
@@ -386,15 +466,12 @@ function handleSendMessage() {
         return;
     }
     
-    // Emit to server
     socket.emit('send_message', {
         message: messageText
     });
     
-    // Clear input
     messageInput.value = '';
     
-    // Keep focus on input
     messageInput.focus();
     
     console.log(`📤 Sent: ${messageText}`);
@@ -424,10 +501,8 @@ function addChatMessage(data, isOwnMessage) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isOwnMessage ? 'user' : 'other'}`;
     
-    // Format timestamp
     const time = formatTime(data.timestamp);
     
-    // Get first letter for avatar
     const avatarLetter = data.username.charAt(0).toUpperCase();
     
     messageDiv.innerHTML = `
@@ -481,12 +556,10 @@ function showNotification(message, type = 'info') {
     notificationText.textContent = message;
     notificationToast.className = `notification-toast ${type}`;
     
-    // Show toast
     setTimeout(() => {
         notificationToast.classList.remove('hidden');
     }, 100);
     
-    // Hide after 3 seconds
     setTimeout(() => {
         notificationToast.classList.add('hidden');
     }, 3100);
@@ -564,6 +637,18 @@ messageInput.addEventListener('keypress', (e) => {
     }
 });
 
+// Close emoji picker when clicking outside
+document.addEventListener('click', (e) => {
+    const emojiPicker = document.getElementById('emojiPicker');
+    const emojiButton = document.getElementById('emojiButton');
+    
+    if (emojiPicker && !emojiPicker.contains(e.target) && e.target !== emojiButton && !emojiButton.contains(e.target)) {
+        if (!emojiPicker.classList.contains('hidden')) {
+            emojiPicker.classList.add('hidden');
+        }
+    }
+});
+
 // ========================================
 // INITIALIZATION
 // ========================================
@@ -574,12 +659,10 @@ messageInput.addEventListener('keypress', (e) => {
 function initApp() {
     console.log('🚀 ChatFlow 2.0 initializing...');
     
-    // Check for saved session
     const savedUsername = localStorage.getItem('chatflow_username');
     const savedUserData = localStorage.getItem('chatflow_user_data');
     
     if (savedUsername && savedUserData) {
-        // Auto-login with saved session
         AppState.username = savedUsername;
         AppState.userData = JSON.parse(savedUserData);
         AppState.isAuthenticated = true;
@@ -587,7 +670,6 @@ function initApp() {
         console.log('📝 Found saved session, auto-connecting...');
         connectToChat();
     } else {
-        // Show auth screen
         authScreen.classList.add('active');
         loginUsername.focus();
     }
