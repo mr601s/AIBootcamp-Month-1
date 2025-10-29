@@ -1,127 +1,92 @@
-""" Decorators - Day 15
-Function wrappers that add superpowers
+"""
+Custom decorators for banking operations
 """
 
-from sys import exception
 import time
 from datetime import datetime
+from functools import wraps 
 
-# Example 1: Basic decorator
-def my_decorator(func):
-    """Wrap a function with extra behavior"""
-    def wrapper():
-        print('Something before the function')
-        func()
-        print('something after the function')
-    return wrapper
+def log_transaction(func):
+    """
+    Decorator that logs all transactions to console and file.
 
-@my_decorator
-def say_hello():
-    print('hello!')
+    Usage: @log_transaction above any method that modifies account
+    """
 
-print('Example 1: Basic decorator')
-say_hello()
-print()
+    @wraps(func) # Preserves original function name/docstring
+    def wrapper(self, *args, **kwargs):
+        # Get function name and arguments
+        func_name = func.__name__
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-# Example 2: decorators with arguments 
-def smart_decorator(func):
-    """Decorator that handles function arguments"""
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
+        # Log before transaction
+        log_message = f'[{timestamp}] {self.owner} - {func_name} - Args: {args}'
+        print(log_message)
+
+        # Write to file
+        with open('transactions.log', 'a') as f:
+            f.write(log_message + '\n')
+
+        # Execute the transaction
+        result = func(self, *args, **kwargs)
+
+        # Log after transaction
+        result_message = f'-> Result: {result}, New Balance: ${self.balance:.2f}'
+        print(result_message)
+        
+        with open('transactions.log', 'a') as f:
+            f.write(result_message + '\n')
+
         return result
+    
     return wrapper
 
-@smart_decorator
-def add(a, b):
-    return a + b
-
-print('Example 2: Decorator with args')
-print(f'Add 5 + 3 = {add(5, 3)}')
-print()
-
-# Example 3: Timing decorator (SUPER USEFUL)
 def timer(func):
-    """Measure how long a function takes"""
+    """
+    Decorator that measures execution time.
+    Usage: @timer above any method to track performance
+    """
+    @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        duration = end_time - start_time
-        print(f'Function "{func.__name__}" took {duration:.4f} seconds')
-        return result
+
+        duration = (end_time - start_time) * 1000 # convert to milliseconds
+        print(f'Timer: {func.__name__} took {duration:.2f}ms')
+
+        return result  
+    
     return wrapper
 
-@timer
-def slow_function():
-    """Simulate slow operation"""
-    time.sleep(1)
-    return 'Done!'
+def validate_amount(func):
+    """
+    Decorator that validates transaction amounts.
+    Ensures amount is positive and numeric
+    
+    Usage: @validate_amount above deposit/withdrawal methods
+    """
 
-print('Example 3: Timing decorator')
-result = slow_function()
-print(f'Result: {result}')
-print()
+    @wraps(func)
+    def wrapper(self, amount, *args, **kwargs):
+        # Validate amount is a number
+        if not isinstance(amount, (int, float)):
+            raise TypeError(f'Amount must be a number, got {type(amount).__name__}')
+        
+        # Validate amount is positive
+        if amount <= 0:
+            raise ValueError(f'Amount must be positive, got {amount}')
+        
+        # If valid, proceed with transaction
+        return func(self, amount, *args, **kwargs)
+    
+    return wrapper 
 
-# Example 4: Logging decorator
-def logger(func):
-    """Log function calls with timestamp"""
-    def wrapper(*args, **kwargs):
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print(f'[{now}] Calling function "{func.__name__}" with args: {args}, kwargs: {kwargs}')
-        result = func(*args, **kwargs)
-        print(f'[{now}] Function "{func.__name__}" returned: {result}')
-        return result
-    return wrapper
-
-@logger
-def calculate_total(items):
-    """Calculate total price"""
-    return sum(items)
-
-print('Example 4: Logging decorator')
-total = calculate_total([10, 20, 30, 40, 50])
-print()
-
-# Example 5: Multiple decorators (STACKING)
-@timer
-@logger
-def complex_operation(x, y):
-    """Operation with both logging and timing"""
-    time.sleep(0.5)
-    return x * y
-
-print('Example 5: Stacked decorators')
-result = complex_operation(5, 10)
-print(f'Final Result: {result}')
-print()
-
-# Example 6: Practical - Retry decorator
-def retry(max_attempts=3):
-    """Retry a function if it raises an exception"""
-    def decorator(func):
-        def wrapper(*args, **kwargs):
-            attempts = 0
-            while attempts < max_attempts:
-                try:
-                    return func(*args, **kwargs)
-                except Exception as e:
-                    attempts += 1
-                    print(f'Attempt {attempts} failed: {e}')
-                    if attempts == max_attempts:
-                        print('Max attempts reached. Raising exception.')
-                        raise
-        return wrapper
-    return decorator
-
-@retry(max_attempts=3)
-def unreliable_function(will_fail=True):
-    """Simulates an unreliable API call"""
-    if will_fail:
-        raise ValueError('Simulated failure')
-    return 'Success!'
-
-print('Example 6: Retry decorator')
-try:
-    unreliable_function(will_fail=True)
-except Exception as e:
-    print(f'Final exception caught: {e}')
+if __name__ == "__main__":
+    @timer
+    def test_function():
+        time.sleep(0.01)
+        return "Done"
+    
+    result = test_function()
+    print(f"Result: {result}")

@@ -1,0 +1,11 @@
+[2025-10-29 19:34:56] Alice - deposit - Args: (500,)
+[2025-10-29 19:35:16] Alice - deposit - Args: (500,)
+-> Result: Deposited $500.00, New Balance: $1500.00
+[2025-10-29 19:35:16] Bob - deposit - Args: (250,)
+-> Result: Deposited $250.00, New Balance: $1250.00
+[2025-10-29 19:35:16] Alice - withdraw - Args: (300,)
+-> Result: Withdrew $300.00, New Balance: $1200.00
+[2025-10-29 19:35:16] Alice - transfer - Args: (200, BankAccount('Bob', 1250))
+-> Result: Transferred $200.00 to Bob, New Balance: $1000.00
+[2025-10-29 19:35:16] Alice - deposit - Args: (-100,)
+[2025-10-29 19:35:16] Alice - withdraw - Args: (10000,)
